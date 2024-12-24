@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ASPBoilerplate")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+556597e15b50ee8f081911763c898306edb2f3e5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+711be24e3c1c91bc7a0fe0ae25ee6ac364d26ba5")]
 [assembly: System.Reflection.AssemblyProductAttribute("ASPBoilerplate")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ASPBoilerplate")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
