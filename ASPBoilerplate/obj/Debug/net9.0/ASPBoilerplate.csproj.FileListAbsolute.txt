@@ -26,3 +26,10 @@
 /Users/abtahitajwar/Documents/my-apps/asp-boilerplate/ASPBoilerplate/ASPBoilerplate/obj/Debug/net9.0/ASPBoilerplate.pdb
 /Users/abtahitajwar/Documents/my-apps/asp-boilerplate/ASPBoilerplate/ASPBoilerplate/obj/Debug/net9.0/ASPBoilerplate.genruntimeconfig.cache
 /Users/abtahitajwar/Documents/my-apps/asp-boilerplate/ASPBoilerplate/ASPBoilerplate/obj/Debug/net9.0/ref/ASPBoilerplate.dll
+/Users/abtahitajwar/Documents/my-apps/asp-boilerplate/ASPBoilerplate/ASPBoilerplate/bin/Debug/net9.0/Microsoft.OpenApi.dll
+/Users/abtahitajwar/Documents/my-apps/asp-boilerplate/ASPBoilerplate/ASPBoilerplate/bin/Debug/net9.0/MinimalApis.Extensions.dll
+/Users/abtahitajwar/Documents/my-apps/asp-boilerplate/ASPBoilerplate/ASPBoilerplate/bin/Debug/net9.0/MiniValidation.dll
+/Users/abtahitajwar/Documents/my-apps/asp-boilerplate/ASPBoilerplate/ASPBoilerplate/obj/Debug/net9.0/ASPBoilerplate.csproj.AssemblyReference.cache
+/Users/abtahitajwar/Documents/my-apps/asp-boilerplate/ASPBoilerplate/ASPBoilerplate/obj/Debug/net9.0/ASPBoilerplate.MvcApplicationPartsAssemblyInfo.cs
+/Users/abtahitajwar/Documents/my-apps/asp-boilerplate/ASPBoilerplate/ASPBoilerplate/obj/Debug/net9.0/ASPBoilerplate.sourcelink.json
+/Users/abtahitajwar/Documents/my-apps/asp-boilerplate/ASPBoilerplate/ASPBoilerplate/obj/Debug/net9.0/ASPBoile.09B1F881.Up2Date

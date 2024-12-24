@@ -1,5 +1,4 @@
 namespace ASPBoilerplate.Modules.File;
-// using ASPBoilerplate.Modules.File
 
 public record IFile (
     string Id,
