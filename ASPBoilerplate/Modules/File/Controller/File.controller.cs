@@ -55,26 +55,27 @@ public static class FileController
 
     public static WebApplication FileRoutes(this WebApplication app)
     {
-        app.MapGet("/files", () => { return Results.Ok(files); });
+        app.MapGet("/files", (AppDbContext dbContext) =>
+        {
+            var files = dbContext.Files.ToList();
+            return Results.Ok(files);
+        });
 
-        app.MapGet("/files/{Id}", (string Id) => { return files.Find(file => file.Id == Id); })
+        app.MapGet("/files/{Id}", (string id, AppDbContext dbContext) =>
+            {
+                var file = dbContext.Files.Find(id);
+                return file;
+            })
             .WithName("GetFileSingle");
 
-        app.MapPost("/files", (IFilePost body) =>
+        app.MapPost("/files", (IFilePost body, AppDbContext dbContext) =>
         {
-            var newFile = new IFile(
-                Id: Helpers.GenerateRandomString(10),
-                Name: body.Name,
-                Location: $"/files/{body.Name}",
-                Storage: body.Storage,
-                IsUsed: false,
-                CreatedAt: DateTime.Now,
-                UpdatedAt: DateTime.Now
-            );
+            var newFile = FileBinder.FilePostToDto(body);
+
+            dbContext.Files.Add(newFile);
+            dbContext.SaveChanges();
 
             // I need to learn about C# Enums more :(((( 
-
-            files.Add(newFile);
 
             return Results.CreatedAtRoute("GetFileSingle", new { Id = newFile.Id }, newFile);
         });

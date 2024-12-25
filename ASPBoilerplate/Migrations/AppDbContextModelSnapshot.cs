@@ -20,6 +20,7 @@ namespace ASPBoilerplate.Migrations
             modelBuilder.Entity("ASPBoilerplate.Modules.File.FileEntity", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
@@ -45,28 +46,6 @@ namespace ASPBoilerplate.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Files");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "1",
-                            CreatedAt = new DateTime(2024, 12, 24, 18, 37, 42, 786, DateTimeKind.Local).AddTicks(2470),
-                            IsUsed = true,
-                            Location = "file1.txt",
-                            Name = "File 1",
-                            Storage = 0,
-                            UpdatedAt = new DateTime(2024, 12, 24, 18, 37, 42, 794, DateTimeKind.Local).AddTicks(4580)
-                        },
-                        new
-                        {
-                            Id = "2",
-                            CreatedAt = new DateTime(2024, 12, 24, 18, 37, 42, 794, DateTimeKind.Local).AddTicks(4720),
-                            IsUsed = true,
-                            Location = "file2.txt",
-                            Name = "File 2",
-                            Storage = 0,
-                            UpdatedAt = new DateTime(2024, 12, 24, 18, 37, 42, 794, DateTimeKind.Local).AddTicks(4720)
-                        });
                 });
 #pragma warning restore 612, 618
         }
