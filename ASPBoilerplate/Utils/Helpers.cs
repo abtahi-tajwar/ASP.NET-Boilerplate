@@ -18,4 +18,27 @@ public class Helpers
         return result.ToString();
     }
 
+    public static void UpdateEntityWithDto<T, TDto>(T entity, TDto dto)
+    {
+        var entityType = typeof(T);
+        var dtoType = typeof(TDto);
+
+        foreach (var dtoProperty in dtoType.GetProperties())
+        {
+            var entityProperty = entityType.GetProperty(dtoProperty.Name);
+
+            // Skip if the property doesn't exist in the entity or if the DTO property is null
+            if (entityProperty != null && dtoProperty.CanRead)
+            {
+                var value = dtoProperty.GetValue(dto);
+
+                if (value != null)
+                {
+                    entityProperty.SetValue(entity, value);
+                }
+            }
+        }
+    }
+
+
 }
