@@ -3,12 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace ASPBoilerplate.Modules.File;
 
-[JsonConverter(typeof(JsonStringEnumConverter))]
-public enum FILE_STORAGE_TYPES
-{
-    [EnumMember(Value="LOCAL")]
-    LOCAL,
-    [EnumMember(Value="FIREBASE")]
-    FIREBASE
-};
+
+class FileConstants {
+    public static string FILE_STORAGE_PATH = "Storage/Uploads";
+    public static FILE_STORAGE_TYPES FILE_STORAGE_TYPE = FILE_STORAGE_TYPES.LOCAL;
+}
 

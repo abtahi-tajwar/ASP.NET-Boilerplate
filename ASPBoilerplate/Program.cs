@@ -8,6 +8,7 @@ var connectionString = builder.Configuration.GetConnectionString("DatabaseConnec
 builder.Services.AddSqlite<AppDbContext>(connectionString);
 
 var app = builder.Build();
+// app.UseAntiforgery();
 
 app.MapGet("/", () => "Connection is OK!");
 app.FileRoutes();
