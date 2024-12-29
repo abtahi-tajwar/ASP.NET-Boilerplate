@@ -25,4 +25,13 @@ public static class CustomResponse
         };
         return Results.CreatedAtRoute("GetFileSingle", new { Id = Id }, response);
     }
+    public static IResult BadRequest(string message = "Bad Request!")
+    {
+        var response = new
+        {
+            Success = false,
+            Message = message
+        };
+        return Results.BadRequest(response);
+    }
 }

@@ -24,18 +24,20 @@ public static class FileController
             })
             .WithName("GetFileSingle");
 
-        app.MapPost("/upload", ([FromForm] IEnumerable<IFormFile> files, AppDbContext dbContext) =>
+        app.MapPost("/upload", ([FromForm] IFormFileCollection files, AppDbContext dbContext) =>
         {
             FileService service = new(dbContext);
-            foreach(var file in files)
+
+            if (files == null || !files.Any())
             {
-                if (file == null)
-                {
-                    Console.WriteLine("File is null");
-                } else {
-                    Console.WriteLine(file.FileName); 
-                }
+                return CustomResponse.BadRequest("No files received");
             }
+
+            if (!FileService.IsAllUploadedFileExtensionsValid(files))
+            {
+                return CustomResponse.BadRequest($"All Files must be {string.Join(", ", FileConstants.ALLOWED_EXTENSION)}");
+            }
+
             List<FileEntity> uploaded = service.UploadFiles(files);
 
             return CustomResponse.Ok(uploaded);

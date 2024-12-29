@@ -37,6 +37,10 @@ namespace ASPBoilerplate.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("OriginalName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("Storage")
                         .HasColumnType("INTEGER");
 

@@ -5,10 +5,10 @@ public class FileService
 {
     private readonly AppDbContext dbContext;
     private readonly FILE_STORAGE_TYPES StorageType = FileConstants.FILE_STORAGE_TYPE;
-    private readonly Dictionary<FILE_STORAGE_TYPES, Func<IEnumerable<IFormFile>, List<CreateFileDto>>> FILE_UPLOAD_ACTION_MAP = 
+    private readonly Dictionary<FILE_STORAGE_TYPES, Func<IEnumerable<IFormFile>, List<CreateFileDto>>> FILE_UPLOAD_ACTION_MAP =
         new Dictionary<FILE_STORAGE_TYPES, Func<IEnumerable<IFormFile>, List<CreateFileDto>>>
         {
-            { FILE_STORAGE_TYPES.LOCAL, (IEnumerable<IFormFile> files) => SaveToLocal(files) },
+            { FILE_STORAGE_TYPES.LOCAL, (IEnumerable<IFormFile> files) => SaveToLocal(files) }
             // { FILE_STORAGE_TYPES.FIREBASE, SaveToFirebase }
         };
     public FileService(AppDbContext _dbContext)
@@ -52,7 +52,10 @@ public class FileService
 
         foreach (var file in FileEntries)
         {
-            FileEntities.Add(FileBinder.CreateDtoToEntity(file));
+            FileEntity fileEntity = FileBinder.CreateDtoToEntity(file);
+            dbContext.Files.Add(fileEntity);
+            dbContext.SaveChanges();
+            FileEntities.Add(fileEntity);
         }
 
         return FileEntities;
@@ -68,10 +71,16 @@ public class FileService
         {
             if (formFile.Length > 0)
             {
-                var filePath = Path.Combine(FileConstants.FILE_STORAGE_PATH,
-                    $"{Path.GetRandomFileName()}{formFile.FileName}");
+                string fileName = $"{Path.GetRandomFileName()}{Path.GetExtension(formFile.FileName)}";
+                var filePath = Path.Combine(FileConstants.FILE_STORAGE_PATH, fileName);
 
-                FileEntries.Add(new CreateFileDto(formFile.FileName, FileConstants.FILE_STORAGE_PATH));
+                CreateFileDto fileDto = new CreateFileDto(
+                    fileName, 
+                    filePath, 
+                    FileConstants.FILE_STORAGE_TYPE,
+                    formFile.FileName
+                );
+                FileEntries.Add(fileDto);
 
                 using (var stream = System.IO.File.Create(filePath))
                 {
@@ -96,17 +105,17 @@ public class FileService
     /**
      * Helper methods
      */
-    public static FILE_STORAGE_TYPES GetFileStorageEnum(string storage)
+    public static FILE_STORAGE_TYPES GetFileStorageEnum(string? storage)
     {
         FILE_STORAGE_TYPES _storage;
-
+        if (storage == null)  _storage = FILE_STORAGE_TYPES.LOCAL;
         if (storage.ToLower() == "Local".ToLower())
         {
             _storage = FILE_STORAGE_TYPES.LOCAL;
         }
         else if (storage.ToLower() == "Remote".ToLower())
         {
-            _storage = FILE_STORAGE_TYPES.FIREBASE;
+            _storage = FILE_STORAGE_TYPES.LOCAL;
         }
         else
         {
@@ -114,5 +123,14 @@ public class FileService
         }
 
         return _storage;
+    }
+    public static Boolean IsAllUploadedFileExtensionsValid(IEnumerable<IFormFile> files) {
+        Boolean isValid = true;
+        foreach( var file in files ) {
+            if (!FileConstants.ALLOWED_EXTENSION.Contains(Path.GetExtension(file.FileName))) {
+                isValid = false;
+            }
+        }
+        return isValid;
     }
 }

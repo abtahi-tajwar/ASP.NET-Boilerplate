@@ -6,8 +6,9 @@ public class FileBinder
     {
         var newFile = new FileEntity {
             Name = file.Name,
-            Location = $"/files/{file.Name}",
-            Storage = FileService.GetFileStorageEnum(file.Storage),
+            Location = file.Location,
+            Storage = file.Storage ?? FILE_STORAGE_TYPES.LOCAL,
+            OriginalName = file.OriginalName ?? "",
             IsUsed = false,
             CreatedAt = DateTime.Now,
             UpdatedAt = DateTime.Now

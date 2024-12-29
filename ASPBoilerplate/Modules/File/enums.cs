@@ -8,8 +8,8 @@ namespace ASPBoilerplate.Modules.File;
 public enum FILE_STORAGE_TYPES
 {
     [EnumMember(Value="LOCAL")]
-    LOCAL,
-    [EnumMember(Value="FIREBASE")]
-    FIREBASE
+    LOCAL
+    // [EnumMember(Value="FIREBASE")]
+    // FIREBASE
 };
 
