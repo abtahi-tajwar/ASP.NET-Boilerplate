@@ -3,6 +3,7 @@ namespace ASPBoilerplate.Modules.File;
 using System.Runtime.CompilerServices;
 using ASPBoilerplate.Utils;
 using Microsoft.AspNetCore.Mvc;
+using ASPBoilerplate.Middlewares;
 
 public static class FileController
 {
@@ -10,6 +11,9 @@ public static class FileController
     public static WebApplication FileRoutes(this WebApplication _app)
     {
         var app = _app.MapGroup("/files");
+        // _app.Map("/files", (IApplicationBuilder app) => {
+        //     app.UseAppAuthentication();
+        // });
         app.DisableAntiforgery();
         app.MapGet("/", (AppDbContext dbContext) =>
         {

@@ -75,10 +75,10 @@ public class FileService
                 var filePath = Path.Combine(FileConstants.FILE_STORAGE_PATH, fileName);
 
                 CreateFileDto fileDto = new CreateFileDto(
-                    fileName, 
-                    filePath, 
-                    FileConstants.FILE_STORAGE_TYPE,
-                    formFile.FileName
+                    Name: fileName, 
+                    Location: filePath, 
+                    Storage: FileConstants.FILE_STORAGE_TYPE,
+                    OriginalName: formFile.FileName
                 );
                 FileEntries.Add(fileDto);
 
