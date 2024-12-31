@@ -19,7 +19,7 @@ public class AuthorizationFilter : Attribute, IAuthorizationFilter
     public void OnAuthorization(AuthorizationFilterContext context)
     {
         var bearer = context.HttpContext.Request.Headers.Authorization;
-        Console.WriteLine("Authorization", bearer);
+        Console.WriteLine($"Authorization {bearer}");
 
         if (_role != "Admin")
         {

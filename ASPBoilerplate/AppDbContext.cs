@@ -1,5 +1,6 @@
 using System;
 using ASPBoilerplate.Modules.File;
+using ASPBoilerplate.Modules.User;
 using Microsoft.EntityFrameworkCore;
 
 namespace ASPBoilerplate;
@@ -7,6 +8,9 @@ namespace ASPBoilerplate;
 public class AppDbContext(DbContextOptions<AppDbContext> options)  : DbContext(options)
 {
     public DbSet<FileEntity> Files { get; set; }
+    public DbSet<UserEntity> Users { get; set; }
+    public DbSet<UserProfileEntity> UserProfiles { get; set; }
+    public DbSet<UserTokenEntity> UserTokens { get; set; }
 
     // protected override void OnModelCreating(ModelBuilder modelBuilder)
     // {
@@ -33,4 +37,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)  : DbContext(o
     //         }
     //     ]);
     // }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    => optionsBuilder
+        .UseSeeding((context, _) =>
+        {
+            BaseUserSeeder.Seed(context);
+        });
 }

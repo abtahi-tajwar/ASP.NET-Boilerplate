@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ASPBoilerplate.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace ASPBoilerplate.Controllers;
 
@@ -12,16 +13,11 @@ namespace ASPBoilerplate.Controllers;
 {
     [HttpGet("list", Name = "ListUsers")]
     [AuthorizationFilter("Admin")]
-    public IEnumerable<UserEntity> List()
+    public IEnumerable<UserEntity> List(AppDbContext context)
     {
-        var user = new UserEntity
-        {
-            Id = "222",
-            Username = "Abtahi Tajwar",
-            Name = "Abtahi Tajwar",
-            Email = "abtahitajwar@gmail.com"
-
-        };
-        return [user];
+        var users = context.Users.ToList();
+        return users;
     }
+
+    
 }
