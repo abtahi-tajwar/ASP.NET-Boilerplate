@@ -1,4 +1,5 @@
 using ASPBoilerplate;
+using ASPBoilerplate.Filters;
 using ASPBoilerplate.Middlewares;
 using ASPBoilerplate.Modules.File;
 using ASPBoilerplate.Utils;
@@ -7,7 +8,9 @@ using Microsoft.AspNetCore.Http.Features;
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection");
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => {
+    // options.Filters.Add<AuthenticationFilter>();
+});
 builder.Services.AddSqlite<AppDbContext>(connectionString);
 
 var app = builder.Build();
