@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPBoilerplate.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241231054605_InitialMigration")]
+    [Migration("20250101224457_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -62,6 +62,9 @@ namespace ASPBoilerplate.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Otp")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")

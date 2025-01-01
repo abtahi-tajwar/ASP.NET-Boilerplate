@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v9.0": {
       "ASPBoilerplate/1.0.0": {
         "dependencies": {
+          "Mailtrap": "1.1.0",
           "Microsoft.EntityFrameworkCore.Design": "9.0.0",
           "Microsoft.EntityFrameworkCore.Sqlite": "9.0.0",
           "MinimalApis.Extensions": "0.11.0"
@@ -21,6 +22,14 @@
           "lib/net6.0/Humanizer.dll": {
             "assemblyVersion": "2.14.0.0",
             "fileVersion": "2.14.1.48190"
+          }
+        }
+      },
+      "Mailtrap/1.1.0": {
+        "runtime": {
+          "lib/netstandard2.1/Mailtrap.dll": {
+            "assemblyVersion": "1.1.0.0",
+            "fileVersion": "1.1.0.0"
           }
         }
       },
@@ -748,6 +757,13 @@
       "sha512": "sha512-lQKvtaTDOXnoVJ20ibTuSIOf2i0uO0MPbDhd1jm238I+U/2ZnRENj0cktKZhtchBMtCUSRQ5v4xBCUbKNmyVMw==",
       "path": "humanizer.core/2.14.1",
       "hashPath": "humanizer.core.2.14.1.nupkg.sha512"
+    },
+    "Mailtrap/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rXBYEj0ljgabkKqPKFX+v4ovmxYov6fUrsNM7OLgEw/Gwcbie20CeRjBJA0G8RrSTD0O8eJA7u8PjNQTNFAOGg==",
+      "path": "mailtrap/1.1.0",
+      "hashPath": "mailtrap.1.1.0.nupkg.sha512"
     },
     "Microsoft.Bcl.AsyncInterfaces/7.0.0": {
       "type": "package",

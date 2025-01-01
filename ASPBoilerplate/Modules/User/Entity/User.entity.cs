@@ -13,7 +13,8 @@ public class UserEntity
     public string? Password { get; set; }
     public required USER_ROLES Role { get; set; }
     public List<UserTokenEntity>? Tokens { get; set; }
-    public UserProfileEntity? Profile { get; set;}
+    public UserProfileEntity? Profile { get; set; }
+    public string? Otp { get; set; }
 
 };
 

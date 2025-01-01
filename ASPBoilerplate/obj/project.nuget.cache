@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "cMOgts9yoUo=",
+  "dgSpecHash": "ibq9QEpsO6c=",
   "success": true,
   "projectFilePath": "/Users/abtahitajwar/Documents/my-apps/asp-boilerplate/ASPBoilerplate/ASPBoilerplate/ASPBoilerplate.csproj",
   "expectedPackageFiles": [
     "/Users/abtahitajwar/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
+    "/Users/abtahitajwar/.nuget/packages/mailtrap/1.1.0/mailtrap.1.1.0.nupkg.sha512",
     "/Users/abtahitajwar/.nuget/packages/microsoft.bcl.asyncinterfaces/7.0.0/microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",
     "/Users/abtahitajwar/.nuget/packages/microsoft.build.framework/17.8.3/microsoft.build.framework.17.8.3.nupkg.sha512",
     "/Users/abtahitajwar/.nuget/packages/microsoft.build.locator/1.7.8/microsoft.build.locator.1.7.8.nupkg.sha512",

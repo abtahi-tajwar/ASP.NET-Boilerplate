@@ -37,7 +37,8 @@ namespace ASPBoilerplate.Migrations
                     Username = table.Column<string>(type: "TEXT", nullable: false),
                     Email = table.Column<string>(type: "TEXT", nullable: true),
                     Password = table.Column<string>(type: "TEXT", nullable: true),
-                    Role = table.Column<int>(type: "INTEGER", nullable: false)
+                    Role = table.Column<int>(type: "INTEGER", nullable: false),
+                    Otp = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
