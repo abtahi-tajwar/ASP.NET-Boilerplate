@@ -1,4 +1,5 @@
 using System;
+using ASPBoilerplate.Configurations;
 using ASPBoilerplate.Utils;
 
 namespace ASPBoilerplate.Modules.User;
@@ -11,7 +12,7 @@ public class UserService
     }
 
     public void GetOtp (string email) {
-        var mail = new Mail();
-        mail.SetOTP("1234", email);
+        var mail = new MailService();
+        int otp = mail.SetOTP(email);
     }
 }
