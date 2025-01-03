@@ -1,13 +1,14 @@
 using System;
+using ASPBoilerplate.Modules.User.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace ASPBoilerplate.Modules.User;
 
 public class BaseUserSeeder
 {
-    public static UserEntity GetSuperAdmin()
+    public static RestrictedUserEntity GetSuperAdmin()
     {
-        return new UserEntity()
+        return new RestrictedUserEntity()
         {
             Username = "Super Admin 1",
             Role = USER_ROLES.SUPER_ADMIN

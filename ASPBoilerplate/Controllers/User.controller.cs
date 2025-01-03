@@ -3,17 +3,19 @@ using ASPBoilerplate.Modules.User;
 using Microsoft.AspNetCore.Mvc;
 using ASPBoilerplate.Filters;
 using ASPBoilerplate.Modules.Auth;
+using ASPBoilerplate.Modules.User.Dtos;
+using ASPBoilerplate.Modules.User.Entity;
 
 namespace ASPBoilerplate.Controllers;
 
 [ApiController]
-[Route("/user")]public class User : ControllerBase
+[Route("/user")]public class UserController : ControllerBase
 {
     [HttpGet("list", Name = "ListUsers")]
     [AuthorizationFilter("Admin")]
-    public IEnumerable<UserEntity> List(AppDbContext context)
+    public IEnumerable<UnrestrictedUserEntity> List(AppDbContext context)
     {
-        var users = context.Users.ToList();
+        var users = context.UnrestrictedUsers.ToList();
         return users;
     }
 
@@ -25,21 +27,23 @@ namespace ASPBoilerplate.Controllers;
         service.GetOtp(body.Email);
         return CustomResponse.Ok("OTP sent to email");
     }
-
     
+}
 
-    /**
-    The user sign up process will be 2 different kinds
-    1. Admin panel user sign up
-        a. User will be created by the admin
-        b. User will be sent an email with a link to set their password
-        c. User will be able to login with their email and password
-        d. Then they will have to update their profile
-    2. User facing signup
-        a. User will sign up with their email and password
-        b. User will be sent an email with a link to set their password
-        c. User will be able to login with their email and password
-        d. Then they will have to update their profile
-    */
+[ApiController]
+[Route("admin/user")]
+public class UserControllerAdmin : ControllerBase{
+    [HttpGet("list", Name = "ListUsersAdmin")]
+    public IEnumerable<RestrictedUserEntity> List(AppDbContext context)
+    {
+        var users = context.RestrictedUsers.ToList();
+        return users;
+    }
+    [HttpPost("create", Name = "CreateUserAdmin")]
+    public IResult CreateUserAdmin (CreateUserAdminDto body, AppDbContext context) {
+        var service = new UserService(context);
+        RestrictedUserEntity newUser = service.RegisterUserEmailAdmin(body);
+        return CustomResponse.Ok(newUser, "User Registered");
+    }   
     
 }

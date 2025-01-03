@@ -40,5 +40,19 @@ public class Helpers
         }
     }
 
+    public static T ParseEnum<T>(string Role)
+    {
+        if (Role == null) throw new ArgumentException($"Invalid role: {Role}");
+        string UpperCaseRole = Role.ToUpper();
+        if (Enum.TryParse(typeof(T), Role, true, out var result))
+        {
+            return (T)result;
+        }
+        else
+        {
+            throw new ArgumentException($"Invalid role: {Role}");
+        }
+    }
+
 
 }
