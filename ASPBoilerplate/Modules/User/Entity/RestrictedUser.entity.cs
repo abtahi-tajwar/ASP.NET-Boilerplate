@@ -1,15 +1,19 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace ASPBoilerplate.Modules.User.Entity;
 
+[Index(nameof(Email), IsUnique = true)]
 public class RestrictedUserEntity
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public string Id { get; set; }
     public required string  Username { get; set; }
-    public string? Email { get; set; }
+    public string?  Email { get; set; }
     public string? Password { get; set; }
+    public bool IsEmailConfirmed { get; set; } = false;
+    public bool IsPasswordSet { get; set; } = false;
     public required USER_ROLES Role { get; set; }
     public List<RestrictedUserTokenEntity>? Tokens { get; set; }
     public RestrictedUserEntity? Profile { get; set; }
@@ -20,9 +24,9 @@ public class RestrictedUserEntity
 public class RestrictedUserUserOtpEntity {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public string Id { get; set; }
-    public string UserId { get; set; }
     [ForeignKey("UserId")]
-    public RestrictedUserEntity UserEntity { get; set; } = null!;
+    public string UserId { get; set; }
+    // public RestrictedUserEntity UserEntity { get; set; } = null!;
     public required string Otp { get; set; }
     public required DateTime CreatedAt { get; set; }
     public DateTime? ExpireAt { get; set; }

@@ -18,15 +18,6 @@ namespace ASPBoilerplate.Controllers;
         var users = context.UnrestrictedUsers.ToList();
         return users;
     }
-
-    [HttpPost("verify-email", Name = "VerifyEmail")]
-    public IResult CreateUser(VerifyEmailDto body, AppDbContext context)
-    {
-        var service = new UserService(context);
-
-        service.GetOtp(body.Email);
-        return CustomResponse.Ok("OTP sent to email");
-    }
     
 }
 

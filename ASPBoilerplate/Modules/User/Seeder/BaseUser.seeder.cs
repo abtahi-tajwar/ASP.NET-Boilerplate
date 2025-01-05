@@ -11,7 +11,8 @@ public class BaseUserSeeder
         return new RestrictedUserEntity()
         {
             Username = "Super Admin 1",
-            Role = USER_ROLES.SUPER_ADMIN
+            Role = USER_ROLES.SUPER_ADMIN,
+            Email = "abtahitajwar@gmail.com"
         };
     }
     public static void Seed(DbContext context)

@@ -30,24 +30,18 @@ namespace ASPBoilerplate.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RestrictedUsers",
+                name: "RestrictedUserOtps",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
-                    Username = table.Column<string>(type: "TEXT", nullable: false),
-                    Email = table.Column<string>(type: "TEXT", nullable: true),
-                    Password = table.Column<string>(type: "TEXT", nullable: true),
-                    Role = table.Column<int>(type: "INTEGER", nullable: false),
-                    ProfileId = table.Column<string>(type: "TEXT", nullable: true)
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    Otp = table.Column<string>(type: "TEXT", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ExpireAt = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RestrictedUsers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RestrictedUsers_RestrictedUsers_ProfileId",
-                        column: x => x.ProfileId,
-                        principalTable: "RestrictedUsers",
-                        principalColumn: "Id");
+                    table.PrimaryKey("PK_RestrictedUserOtps", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -65,24 +59,58 @@ namespace ASPBoilerplate.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RestrictedUserOtps",
+                name: "RestrictedUsers",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    Otp = table.Column<string>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ExpireAt = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    Username = table.Column<string>(type: "TEXT", nullable: false),
+                    Email = table.Column<string>(type: "TEXT", nullable: true),
+                    Password = table.Column<string>(type: "TEXT", nullable: true),
+                    IsEmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsPasswordSet = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Role = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProfileId = table.Column<string>(type: "TEXT", nullable: true),
+                    OtpId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RestrictedUserOtps", x => x.Id);
+                    table.PrimaryKey("PK_RestrictedUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RestrictedUserOtps_RestrictedUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_RestrictedUsers_RestrictedUserOtps_OtpId",
+                        column: x => x.OtpId,
+                        principalTable: "RestrictedUserOtps",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_RestrictedUsers_RestrictedUsers_ProfileId",
+                        column: x => x.ProfileId,
                         principalTable: "RestrictedUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UnrestrictedUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    Username = table.Column<string>(type: "TEXT", nullable: false),
+                    Email = table.Column<string>(type: "TEXT", nullable: false),
+                    Password = table.Column<string>(type: "TEXT", nullable: false),
+                    ProfileId = table.Column<string>(type: "TEXT", nullable: true),
+                    OtpId = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UnrestrictedUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UnrestrictedUsers_UnrestrictedUserOtps_OtpId",
+                        column: x => x.OtpId,
+                        principalTable: "UnrestrictedUserOtps",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UnrestrictedUsers_UnrestrictedUsers_ProfileId",
+                        column: x => x.ProfileId,
+                        principalTable: "UnrestrictedUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -123,32 +151,6 @@ namespace ASPBoilerplate.Migrations
                         name: "FK_RestrictedUserTokens_RestrictedUsers_RestrictedUserEntityId",
                         column: x => x.RestrictedUserEntityId,
                         principalTable: "RestrictedUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UnrestrictedUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    Username = table.Column<string>(type: "TEXT", nullable: false),
-                    Email = table.Column<string>(type: "TEXT", nullable: false),
-                    Password = table.Column<string>(type: "TEXT", nullable: false),
-                    ProfileId = table.Column<string>(type: "TEXT", nullable: true),
-                    OtpId = table.Column<string>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UnrestrictedUsers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UnrestrictedUsers_UnrestrictedUserOtps_OtpId",
-                        column: x => x.OtpId,
-                        principalTable: "UnrestrictedUserOtps",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_UnrestrictedUsers_UnrestrictedUsers_ProfileId",
-                        column: x => x.ProfileId,
-                        principalTable: "UnrestrictedUsers",
                         principalColumn: "Id");
                 });
 
@@ -195,15 +197,20 @@ namespace ASPBoilerplate.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_RestrictedUserOtps_UserId",
-                table: "RestrictedUserOtps",
-                column: "UserId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_RestrictedUserProfiles_UserId",
                 table: "RestrictedUserProfiles",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RestrictedUsers_Email",
+                table: "RestrictedUsers",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RestrictedUsers_OtpId",
+                table: "RestrictedUsers",
+                column: "OtpId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RestrictedUsers_ProfileId",
@@ -243,9 +250,6 @@ namespace ASPBoilerplate.Migrations
                 name: "Files");
 
             migrationBuilder.DropTable(
-                name: "RestrictedUserOtps");
-
-            migrationBuilder.DropTable(
                 name: "RestrictedUserProfiles");
 
             migrationBuilder.DropTable(
@@ -262,6 +266,9 @@ namespace ASPBoilerplate.Migrations
 
             migrationBuilder.DropTable(
                 name: "UnrestrictedUsers");
+
+            migrationBuilder.DropTable(
+                name: "RestrictedUserOtps");
 
             migrationBuilder.DropTable(
                 name: "UnrestrictedUserOtps");

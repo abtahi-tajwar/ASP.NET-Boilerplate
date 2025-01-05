@@ -1,4 +1,5 @@
 using System;
+using ASPBoilerplate.Modules.Auth;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASPBoilerplate.Controllers;
@@ -22,16 +23,56 @@ namespace ASPBoilerplate.Controllers;
 public class AuthController : ControllerBase
 {
     [HttpPost("signup", Name = "SignUp")]
-    public IResult SignUp () {
+    public IResult SignUp()
+    {
         return CustomResponse.Ok("User signed up");
     }
 }
 
-[Route("/auth/admin")]
+[ApiController]
+[Route("/admin/auth")]
 public class AuthControllerAdmin : ControllerBase
 {
-    [HttpPost("signup", Name = "AdminSignUp")]
-    public IResult CreateUserAdmin () {
-        return CustomResponse.Ok("User email registered");
+    [HttpPost("get-otp", Name = "GetOtpAdmin")]
+    public IResult GetOtpAdmin(GetOtpAdminDto body, AppDbContext context)
+    {
+        try
+        {
+            var service = new AuthService(context);
+            var Otp = service.GetOtp(body.Email);
+            return CustomResponse.Ok("Otp sent to users inbox, please check");
+        }
+        catch (Exception e)
+        {
+            return CustomResponse.BadRequest(e.Message);
+        }
+    }
+
+    [HttpPost("verify-otp", Name = "VerifyOtpAdmin")]
+    public IResult VerifyOtpAdmin (VerifyOtpAdminDto body, AppDbContext context) {
+        try {
+            var service = new AuthService(context);
+            var otpValid = service.VerifyOtp(body.Email, body.Otp);
+            
+            if (otpValid) {
+                return CustomResponse.Ok(null, "OTP Verified Successfully!");
+            } else {
+                return CustomResponse.BadRequest("OTP Does not match!");
+            }
+        } catch (Exception e) {
+            return CustomResponse.BadRequest(e.Message);
+        }
+    }
+
+    [HttpPost("set-password", Name = "SetPasswordAdmin")]
+    public IResult SetPasswordAdmin (SetPasswordAdminDto body, AppDbContext context) {
+        try {
+            var service = new AuthService(context);
+            service.SetPasswordAdmin(body.Email, body.Password);
+            return CustomResponse.Ok(null, "Password Successfully Set");
+        } catch (Exception e) {
+            return CustomResponse.BadRequest($"{e.Message}");
+        }     
     }
 }
+

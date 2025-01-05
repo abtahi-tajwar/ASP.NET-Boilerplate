@@ -6,8 +6,8 @@ namespace ASPBoilerplate.Modules.User;
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum USER_ROLES
 {
-    [EnumMember(Value="MEMBER")]
-    MEMBER,
+    [EnumMember(Value="STAFF")]
+    STAFF,
     [EnumMember(Value="ADMIN")]
     ADMIN,
     [EnumMember(Value ="SUPER_ADMIN")]

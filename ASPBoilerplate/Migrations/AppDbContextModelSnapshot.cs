@@ -61,6 +61,15 @@ namespace ASPBoilerplate.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsEmailConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsPasswordSet")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("OtpId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Password")
                         .HasColumnType("TEXT");
 
@@ -75,6 +84,11 @@ namespace ASPBoilerplate.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("OtpId");
 
                     b.HasIndex("ProfileId");
 
@@ -155,9 +169,6 @@ namespace ASPBoilerplate.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("RestrictedUserOtps");
                 });
@@ -272,9 +283,15 @@ namespace ASPBoilerplate.Migrations
 
             modelBuilder.Entity("ASPBoilerplate.Modules.User.Entity.RestrictedUserEntity", b =>
                 {
+                    b.HasOne("ASPBoilerplate.Modules.User.Entity.RestrictedUserUserOtpEntity", "Otp")
+                        .WithMany()
+                        .HasForeignKey("OtpId");
+
                     b.HasOne("ASPBoilerplate.Modules.User.Entity.RestrictedUserEntity", "Profile")
                         .WithMany()
                         .HasForeignKey("ProfileId");
+
+                    b.Navigation("Otp");
 
                     b.Navigation("Profile");
                 });
@@ -295,17 +312,6 @@ namespace ASPBoilerplate.Migrations
                     b.HasOne("ASPBoilerplate.Modules.User.Entity.RestrictedUserEntity", null)
                         .WithMany("Tokens")
                         .HasForeignKey("RestrictedUserEntityId");
-                });
-
-            modelBuilder.Entity("ASPBoilerplate.Modules.User.Entity.RestrictedUserUserOtpEntity", b =>
-                {
-                    b.HasOne("ASPBoilerplate.Modules.User.Entity.RestrictedUserEntity", "UserEntity")
-                        .WithOne("Otp")
-                        .HasForeignKey("ASPBoilerplate.Modules.User.Entity.RestrictedUserUserOtpEntity", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("UserEntity");
                 });
 
             modelBuilder.Entity("ASPBoilerplate.Modules.User.UnrestrictedTokenEntity", b =>
@@ -347,8 +353,6 @@ namespace ASPBoilerplate.Migrations
 
             modelBuilder.Entity("ASPBoilerplate.Modules.User.Entity.RestrictedUserEntity", b =>
                 {
-                    b.Navigation("Otp");
-
                     b.Navigation("Tokens");
                 });
 

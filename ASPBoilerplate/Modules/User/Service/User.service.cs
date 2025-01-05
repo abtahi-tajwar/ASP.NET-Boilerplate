@@ -24,7 +24,7 @@ public class UserService
 
     public RestrictedUserEntity RegisterUserEmailAdmin(CreateUserAdminDto user)
     {
-        RestrictedUserEntity newUser = UserBinder.CreateUserAdminDtoToEntity(user);
+        RestrictedUserEntity newUser = RestrictedUserBinder.CreateUserAdminDtoToEntity(user);
         _context.RestrictedUsers.Add(newUser);
         _context.SaveChanges();
 

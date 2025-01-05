@@ -5,7 +5,7 @@ using ASPBoilerplate.Utils;
 
 namespace ASPBoilerplate.Modules.User.Service;
 
-public class UserBinder
+public class RestrictedUserBinder
 {
     public static RestrictedUserEntity CreateUserAdminDtoToEntity (CreateUserAdminDto user) {
         USER_ROLES Role = Helpers.ParseEnum<USER_ROLES>(user.Role);
@@ -16,4 +16,5 @@ public class UserBinder
         };
         return newUser;
     }
+    
 }
