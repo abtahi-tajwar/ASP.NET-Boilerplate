@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPBoilerplate.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250105025422_InitialMigration")]
+    [Migration("20250106095901_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -137,11 +137,15 @@ namespace ASPBoilerplate.Migrations
                     b.Property<DateTime?>("Expiration")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Otp")
+                    b.Property<string>("RestrictedUserEntityId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Token")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("RestrictedUserEntityId")
+                    b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

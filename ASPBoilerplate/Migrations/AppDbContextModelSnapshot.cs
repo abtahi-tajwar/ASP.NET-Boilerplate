@@ -134,11 +134,15 @@ namespace ASPBoilerplate.Migrations
                     b.Property<DateTime?>("Expiration")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Otp")
+                    b.Property<string>("RestrictedUserEntityId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Token")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("RestrictedUserEntityId")
+                    b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

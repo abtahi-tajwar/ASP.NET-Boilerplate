@@ -22,4 +22,26 @@ public class PasswordHasher
         }
     }
 
+    // Constant-time comparison to prevent timing attacks
+    public static bool AreHashesEqual(string password, string hash2)
+    {
+        string hash1 = HashPassword(password);
+        
+        var hashBytes1 = Convert.FromBase64String(hash1);
+        var hashBytes2 = Convert.FromBase64String(hash2);
+
+        if (hashBytes1.Length != hashBytes2.Length)
+        {
+            return false;
+        }
+
+        var result = true;
+        for (int i = 0; i < hashBytes1.Length; i++)
+        {
+            result &= (hashBytes1[i] == hashBytes2[i]);
+        }
+
+        return result;
+    }
+
 }

@@ -25,7 +25,8 @@ public record LoginAdminDto (
     [Required]
     string Email,
     [Required]
-    string Password
+    string Password,
+    string? Device
 );
 public record LoginAdminResponseDto(
     RestrictedUserEntity User,

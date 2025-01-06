@@ -35,7 +35,9 @@ public class RestrictedUserUserOtpEntity {
 public class RestrictedUserTokenEntity {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public string Id { get; set; }
-    public required string Otp { get; set; }
+    [ForeignKey("UserId")]
+    public required string UserId { get; set; }
+    public required string Token { get; set; }
     public string? DeviceSignature { get; set; }
     public DateTime? Expiration { get; set; }
     public DateTime? CreatedAt { get; set; }

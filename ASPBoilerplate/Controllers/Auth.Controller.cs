@@ -1,5 +1,6 @@
 using System;
 using ASPBoilerplate.Modules.Auth;
+using ASPBoilerplate.Shared.JwtToken;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASPBoilerplate.Controllers;
@@ -79,7 +80,10 @@ public class AuthControllerAdmin : ControllerBase
     [HttpPost("login", Name="LoginAdmin")]
     public IResult LoginAdmin (LoginAdminDto body, AppDbContext context) {
         try {
-            return CustomResponse.Ok(null, "Logged In Successfully");
+            var service = new AuthService(context);
+            var response = service.Login(body.Email, body.Password, body.Device);
+            
+            return CustomResponse.Ok(response, "Logged In Successfully");
         } catch (Exception e) {
             return CustomResponse.BadRequest(e.Message);
         }

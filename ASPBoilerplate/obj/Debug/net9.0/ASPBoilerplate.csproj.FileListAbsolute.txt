@@ -149,3 +149,11 @@
 /Users/abtahitajwar/Documents/my-apps/asp-boilerplate/ASPBoilerplate/ASPBoilerplate/bin/Debug/net9.0/MimeKit.dll
 /Users/abtahitajwar/Documents/my-apps/asp-boilerplate/ASPBoilerplate/ASPBoilerplate/bin/Debug/net9.0/NETCore.MailKit.dll
 /Users/abtahitajwar/Documents/my-apps/asp-boilerplate/ASPBoilerplate/ASPBoilerplate/bin/Debug/net9.0/BouncyCastle.Crypto.dll
+/Users/abtahitajwar/Documents/my-apps/asp-boilerplate/ASPBoilerplate/ASPBoilerplate/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/abtahitajwar/Documents/my-apps/asp-boilerplate/ASPBoilerplate/ASPBoilerplate/bin/Debug/net9.0/Microsoft.IdentityModel.Abstractions.dll
+/Users/abtahitajwar/Documents/my-apps/asp-boilerplate/ASPBoilerplate/ASPBoilerplate/bin/Debug/net9.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/Users/abtahitajwar/Documents/my-apps/asp-boilerplate/ASPBoilerplate/ASPBoilerplate/bin/Debug/net9.0/Microsoft.IdentityModel.Logging.dll
+/Users/abtahitajwar/Documents/my-apps/asp-boilerplate/ASPBoilerplate/ASPBoilerplate/bin/Debug/net9.0/Microsoft.IdentityModel.Protocols.dll
+/Users/abtahitajwar/Documents/my-apps/asp-boilerplate/ASPBoilerplate/ASPBoilerplate/bin/Debug/net9.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/Users/abtahitajwar/Documents/my-apps/asp-boilerplate/ASPBoilerplate/ASPBoilerplate/bin/Debug/net9.0/Microsoft.IdentityModel.Tokens.dll
+/Users/abtahitajwar/Documents/my-apps/asp-boilerplate/ASPBoilerplate/ASPBoilerplate/bin/Debug/net9.0/System.IdentityModel.Tokens.Jwt.dll

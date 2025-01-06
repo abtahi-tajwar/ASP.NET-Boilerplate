@@ -22,8 +22,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
         options => builder.Configuration.Bind("CookieSettings", options));
 
+// Initialize Mail settings
 MailSettings.InitalizeMailSettings(builder);
 MailService.ConfigureServices(builder.Services);
+
+// Initialize Jwt config
+JwtTokenSettings.Initialize(builder);
 
 builder.Services.AddSqlite<AppDbContext>(connectionString);
 
