@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("abac186e-7b35-4bfd-a9e7-2ab3f592cb8a")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("ASPBoilerplate")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b818dc3a1134df94a189a6153ea7f46f9c9a3d2d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3a890843621bd809f5c743799de417dfa1821918")]
 [assembly: System.Reflection.AssemblyProductAttribute("ASPBoilerplate")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ASPBoilerplate")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

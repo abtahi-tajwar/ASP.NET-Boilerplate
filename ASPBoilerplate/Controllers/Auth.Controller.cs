@@ -8,9 +8,10 @@ namespace ASPBoilerplate.Controllers;
     The user sign up process will be 2 different kinds
     1. Resitrcted access user sign up
         a. User will be created by the admin
-        b. User will be sent an email with a link to set their password
-        c. User will be able to login with their email and password
-        d. Then they will have to update their profile
+        b. User will receieve OTP to their email to verify - Done
+        c. User will be able to set their password - Done
+        d. User will be able to login with their email and password - 
+        e. Then they will have to update their profile
     2. General user signup
         a. User will sign up with their email and password
         b. User will be sent an email with a link to set their password
@@ -73,6 +74,15 @@ public class AuthControllerAdmin : ControllerBase
         } catch (Exception e) {
             return CustomResponse.BadRequest($"{e.Message}");
         }     
+    }
+
+    [HttpPost("login", Name="LoginAdmin")]
+    public IResult LoginAdmin (LoginAdminDto body, AppDbContext context) {
+        try {
+            return CustomResponse.Ok(null, "Logged In Successfully");
+        } catch (Exception e) {
+            return CustomResponse.BadRequest(e.Message);
+        }
     }
 }
 

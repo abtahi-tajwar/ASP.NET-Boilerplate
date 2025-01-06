@@ -41,30 +41,34 @@ public class AuthService
         RestrictedUserEntity? User = _context.RestrictedUsers
             .Include(u => u.Otp)
             .FirstOrDefault(User => User.Email == email);
-            
+
         if (User == null)
         {
             throw new Exception("Not user registered using this email");
         }
-        if (User.Otp == null) {
+        if (User.Otp == null)
+        {
             return false;
         }
-        if (otp == User.Otp.Otp && DateTime.Now < User.Otp.ExpireAt) {
+        if (otp == User.Otp.Otp && DateTime.Now < User.Otp.ExpireAt)
+        {
             User.Otp = null;
             User.IsEmailConfirmed = true;
             _context.SaveChanges();
             return true;
-        } else {
+        }
+        else
+        {
             return false;
         }
     }
 
-    public void SetPasswordAdmin (string email, string password) 
+    public void SetPasswordAdmin(string email, string password)
     {
         RestrictedUserEntity? User = _context.RestrictedUsers
             .Include(u => u.Otp)
             .FirstOrDefault(User => User.Email == email);
-            
+
         if (User == null)
         {
             throw new Exception("Not user registered using this email");
@@ -76,6 +80,20 @@ public class AuthService
         User.IsPasswordSet = true;
 
         _context.SaveChanges();
+    }
+
+    public LoginAdminResponseDto Login(string Email, string Password)
+    {
+        var User = _context.RestrictedUsers.FirstOrDefault(u => u.Email == Email);
+        if (User == null)
+        {
+            throw new Exception("Wrong email/password provided");
+        }
+        var response = new LoginAdminResponseDto(
+            User: User,
+            Token: ""
+        );
+        return response;
     }
 
 }
