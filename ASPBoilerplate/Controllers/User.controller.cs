@@ -5,6 +5,7 @@ using ASPBoilerplate.Filters;
 using ASPBoilerplate.Modules.Auth;
 using ASPBoilerplate.Modules.User.Dtos;
 using ASPBoilerplate.Modules.User.Entity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASPBoilerplate.Controllers;
 
@@ -25,6 +26,7 @@ namespace ASPBoilerplate.Controllers;
 [Route("admin/user")]
 public class UserControllerAdmin : ControllerBase{
     [HttpGet("list", Name = "ListUsersAdmin")]
+    [Authorize("Admin")]
     public IEnumerable<RestrictedUserEntity> List(AppDbContext context)
     {
         var users = context.RestrictedUsers.ToList();
