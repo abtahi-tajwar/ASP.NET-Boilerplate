@@ -9,13 +9,23 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.IdentityModel.Tokens;
+using SignalRChat.Hubs;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection");
-builder.Services.AddControllers(options =>
+builder.Services.AddControllers();
+builder.Services.AddCors(options =>
 {
-    // options.Filters.Add<AuthenticationFilter>();
+    options.AddPolicy("AllowSpecificOrigins", policy =>
+    {
+        policy.WithOrigins("http://127.0.0.1:5500") // Specify allowed origins
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials()
+              .SetIsOriginAllowedToAllowWildcardSubdomains();
+    });
 });
 
 // Initialize Authentcation
@@ -29,8 +39,12 @@ MailService.ConfigureServices(builder.Services);
 JwtTokenSettings.Initialize(builder);
 
 builder.Services.AddSqlite<AppDbContext>(connectionString);
+builder.Services.AddSignalR();
 
 var app = builder.Build();
+
+// Use the configured CORS policy
+app.UseCors("AllowSpecificOrigins");
 
 // app.UseAntiforgery();
 
@@ -39,5 +53,7 @@ app.MapGet("/", () => "Connection is OK!");
 app.MapControllers();
 
 app.FileRoutes();
+app.MapHub<ChatHub>("/chatHub");
+
 
 app.Run();
