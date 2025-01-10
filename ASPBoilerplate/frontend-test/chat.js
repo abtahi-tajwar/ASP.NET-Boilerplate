@@ -16,7 +16,7 @@ connection.on("ReceiveMessage", function (user, message) {
     li.textContent = `${user} says ${message}`;
 });
 
-connection.start({ withCredentials: false }).then(function () {
+connection.start({ withCredentials: false, logging: true }).then(function () {
     document.getElementById("sendButton").disabled = false;
 }).catch(function (err) {
     return console.error(err.toString());
