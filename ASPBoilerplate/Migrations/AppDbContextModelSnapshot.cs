@@ -17,6 +17,28 @@ namespace ASPBoilerplate.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
 
+            modelBuilder.Entity("ASPBoilerplate.Modules.Chat.ChatHubConnections", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ConnectionId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ChatHubConnections");
+                });
+
             modelBuilder.Entity("ASPBoilerplate.Modules.File.FileEntity", b =>
                 {
                     b.Property<string>("Id")

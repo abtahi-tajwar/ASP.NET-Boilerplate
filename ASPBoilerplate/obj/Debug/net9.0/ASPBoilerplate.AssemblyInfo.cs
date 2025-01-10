@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ASPBoilerplate")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1b243c5623a82200e5ca92eed309ba041f8d7bb9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+de27bf8c9e14dc0cd998f91f70774afa01a988fc")]
 [assembly: System.Reflection.AssemblyProductAttribute("ASPBoilerplate")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ASPBoilerplate")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

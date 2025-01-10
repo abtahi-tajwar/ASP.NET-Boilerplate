@@ -12,6 +12,20 @@ namespace ASPBoilerplate.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "ChatHubConnections",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    ConnectionId = table.Column<string>(type: "TEXT", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChatHubConnections", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Files",
                 columns: table => new
                 {
@@ -247,6 +261,9 @@ namespace ASPBoilerplate.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ChatHubConnections");
+
             migrationBuilder.DropTable(
                 name: "Files");
 

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPBoilerplate.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250106095901_InitialMigration")]
+    [Migration("20250110065907_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -19,6 +19,28 @@ namespace ASPBoilerplate.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
+
+            modelBuilder.Entity("ASPBoilerplate.Modules.Chat.ChatHubConnections", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ConnectionId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ChatHubConnections");
+                });
 
             modelBuilder.Entity("ASPBoilerplate.Modules.File.FileEntity", b =>
                 {

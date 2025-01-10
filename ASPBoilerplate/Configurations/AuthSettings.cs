@@ -28,13 +28,32 @@ public class AuthSettings
                     ValidAudience = JwtTokenSettings.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtTokenSettings.Secret!))
                 };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        // Retrieve token from query string for WebSocket connections
+                        var accessToken = context.Request.Query["access_token"];
+                        var path = context.HttpContext.Request.Path;
+
+                        if (!string.IsNullOrEmpty(accessToken) &&
+                            path.StartsWithSegments("/chatHub"))
+                        {
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
 
         builder.Services.AddAuthorization(options =>
         {
-            foreach(var role in RoleMapping) {
-                options.AddPolicy(role.Item1, policy => {
+            foreach (var role in RoleMapping)
+            {
+                options.AddPolicy(role.Item1, policy =>
+                {
                     string[] roleStrings = role.Item2.Select(role => role.ToString()).ToArray();
                     policy.RequireRole(roleStrings);
                 });

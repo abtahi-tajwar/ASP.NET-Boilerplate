@@ -1,4 +1,5 @@
 using System;
+using ASPBoilerplate.Modules.Chat;
 using ASPBoilerplate.Modules.File;
 using ASPBoilerplate.Modules.User;
 using ASPBoilerplate.Modules.User.Entity;
@@ -22,6 +23,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)  : DbContext(o
     public DbSet<RestrictedUserProfileEntity> RestrictedUserProfiles { get; set; }
     public DbSet<RestrictedUserUserOtpEntity> RestrictedUserOtps { get; set; }
     public DbSet<RestrictedUserTokenEntity> RestrictedUserTokens { get; set; }
+
+    // Chat Entities
+    public DbSet<ChatHubConnections> ChatHubConnections { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     => optionsBuilder
