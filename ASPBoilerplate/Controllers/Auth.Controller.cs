@@ -1,4 +1,5 @@
 using System;
+using ASPBoilerplate.Filters;
 using ASPBoilerplate.Modules.Auth;
 using ASPBoilerplate.Shared.JwtToken;
 using Microsoft.AspNetCore.Mvc;
@@ -50,27 +51,11 @@ public class AuthControllerAdmin : ControllerBase
         }
     }
 
-    [HttpPost("verify-otp", Name = "VerifyOtpAdmin")]
-    public IResult VerifyOtpAdmin (VerifyOtpAdminDto body, AppDbContext context) {
-        try {
-            var service = new AuthService(context);
-            var otpValid = service.VerifyOtp(body.Email, body.Otp);
-            
-            if (otpValid) {
-                return CustomResponse.Ok(null, "OTP Verified Successfully!");
-            } else {
-                return CustomResponse.BadRequest("OTP Does not match!");
-            }
-        } catch (Exception e) {
-            return CustomResponse.BadRequest(e.Message);
-        }
-    }
-
     [HttpPost("set-password", Name = "SetPasswordAdmin")]
     public IResult SetPasswordAdmin (SetPasswordAdminDto body, AppDbContext context) {
         try {
             var service = new AuthService(context);
-            service.SetPasswordAdmin(body.Email, body.Password);
+            service.SetPasswordAdmin(body.Email, body.Password, body.Otp);
             return CustomResponse.Ok(null, "Password Successfully Set");
         } catch (Exception e) {
             return CustomResponse.BadRequest($"{e.Message}");
@@ -89,4 +74,22 @@ public class AuthControllerAdmin : ControllerBase
         }
     }
 }
+
+[ApiController]
+[Route("/dev/auth")]
+public class AuthControllerAdminDev : ControllerBase {
+    [HttpPost("set-password")]
+    [DevAuthorization]
+    public IResult SetPasswordAdminDev (SetPasswordAdminDto body, AppDbContext context) {
+        try {
+            var service = new AuthService(context);
+            service.SetPasswordAdminDev(body.Email, body.Password, body.Otp);
+            return CustomResponse.Ok(null, "Password Successfully Set");
+        } catch (Exception e) {
+            return CustomResponse.BadRequest($"{e.Message}");
+        }  
+    }
+}
+
+
 

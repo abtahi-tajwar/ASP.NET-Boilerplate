@@ -38,42 +38,18 @@ public class AuthService
         return OtpEntry;
     }
 
-    public Boolean VerifyOtp(string email, string otp)
+    public void SetPasswordAdmin(string email, string password, string otp)
     {
         RestrictedUserEntity? User = _context.RestrictedUsers
             .Include(u => u.Otp)
             .FirstOrDefault(User => User.Email == email);
-
         if (User == null)
         {
             throw new Exception("Not user registered using this email");
         }
-        if (User.Otp == null)
-        {
-            return false;
-        }
-        if (otp == User.Otp.Otp && DateTime.Now < User.Otp.ExpireAt)
-        {
-            User.Otp = null;
-            User.IsEmailConfirmed = true;
-            _context.SaveChanges();
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
 
-    public void SetPasswordAdmin(string email, string password)
-    {
-        RestrictedUserEntity? User = _context.RestrictedUsers
-            .Include(u => u.Otp)
-            .FirstOrDefault(User => User.Email == email);
-
-        if (User == null)
-        {
-            throw new Exception("Not user registered using this email");
+        if (User.Otp?.Otp != otp) {
+            throw new Exception("Otp does not match, cannot set password");
         }
 
         var HashedPassword = PasswordHasher.HashPassword(password);
@@ -132,6 +108,26 @@ public class AuthService
         );
 
         return response;
+    }
+
+
+    // Dev methods
+    public void SetPasswordAdminDev(string email, string password, string otp)
+    {
+        RestrictedUserEntity? User = _context.RestrictedUsers
+            .Include(u => u.Otp)
+            .FirstOrDefault(User => User.Email == email);
+        if (User == null)
+        {
+            throw new Exception("Not user registered using this email");
+        }
+
+        var HashedPassword = PasswordHasher.HashPassword(password);
+
+        User.Password = HashedPassword;
+        User.IsPasswordSet = true;
+
+        _context.SaveChanges();
     }
 
 }

@@ -38,5 +38,4 @@ public class UserControllerAdmin : ControllerBase{
         RestrictedUserEntity newUser = service.RegisterUserEmailAdmin(body);
         return CustomResponse.Ok(newUser, "User Registered");
     }   
-    
 }

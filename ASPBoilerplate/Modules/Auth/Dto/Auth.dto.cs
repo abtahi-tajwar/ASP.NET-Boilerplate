@@ -18,7 +18,8 @@ public record VerifyOtpAdminDto (
 public record SetPasswordAdminDto (
     [Required]
     string Email,
-    string Password
+    string Password,
+    string Otp
 );
 
 public record LoginAdminDto (

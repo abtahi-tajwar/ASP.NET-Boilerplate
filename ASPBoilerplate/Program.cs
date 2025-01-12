@@ -28,6 +28,9 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Initialize General Settings
+GeneralSettings.Initialize(builder);
+
 // Initialize Authentcation
 AuthSettings.Initialize(builder);
 
