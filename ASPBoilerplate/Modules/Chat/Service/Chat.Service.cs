@@ -1,4 +1,5 @@
 using System;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace ASPBoilerplate.Modules.Chat;
@@ -33,5 +34,31 @@ public class ChatService
         }
         _context.ChatHubConnections.Remove(ExistingConnection);
         _context.SaveChanges();
+    }
+
+    public async Task SendMessageToUserAsync (IHubCallerClients Client, string Message, string SenderId, string ReceiverId) {
+        var RestrictedUserEntity = await _context.RestrictedUsers.FirstOrDefaultAsync(user => user.Id == ReceiverId);
+        var UnrestrictedUserEntity = await _context.UnrestrictedUsers.FirstOrDefaultAsync(user => user.Id == ReceiverId);
+
+        if (RestrictedUserEntity == null || UnrestrictedUserEntity == null) {
+            throw new Exception("Invalid receiver id, no user exists with that ID");
+        }
+        var ReceiverConnectionId = await _context.ChatHubConnections.FirstOrDefaultAsync(con => con.UserId == ReceiverId);
+        if (ReceiverConnectionId != null) {
+            await Client.Client(ReceiverConnectionId.ConnectionId).SendAsync("ReceiveMessage", Message);
+        }
+        _context.MessageHistories.Add(new MessageHistory() {
+            SenderId = SenderId,
+            ReceiverId = ReceiverId,
+            Message = Message
+        });
+        var AlreadyInInbox = await _context.ChatInboxes.FirstOrDefaultAsync(inbox => (inbox.UserId == SenderId && inbox.MessagedUserId == ReceiverId));
+        if (AlreadyInInbox == null) {
+            _context.Add(new ChatInbox() {
+                UserId = SenderId,
+                MessagedUserId = ReceiverId,
+            });
+        }
+        await _context.SaveChangesAsync();
     }
 }

@@ -16,7 +16,7 @@ public class RestrictedUserEntity
     public bool IsPasswordSet { get; set; } = false;
     public required USER_ROLES Role { get; set; }
     public List<RestrictedUserTokenEntity>? Tokens { get; set; }
-    public RestrictedUserEntity? Profile { get; set; }
+    public RestrictedUserProfileEntity? Profile { get; set; }
     public RestrictedUserUserOtpEntity? Otp { get; set; }
 }
 

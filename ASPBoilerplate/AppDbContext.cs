@@ -26,6 +26,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)  : DbContext(o
 
     // Chat Entities
     public DbSet<ChatHubConnections> ChatHubConnections { get; set; }
+    public DbSet<MessageHistory> MessageHistories { get; set; }
+    public DbSet<ChatInbox> ChatInboxes { get; set;}
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     => optionsBuilder

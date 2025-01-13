@@ -17,4 +17,16 @@ public class RestrictedUserBinder
         return newUser;
     }
     
+    public static GetRestrictedUserDetailsResponseDto GetUserDetailsEntityToDto (RestrictedUserEntity User) {
+        GetRestrictedUserDetailsResponseDto Result = new (
+            Id: User.Id,
+            UserName: User.Username,
+            Email: User.Email,
+            IsEmailConfirmed: User.IsEmailConfirmed,
+            IsPasswordSet: User.IsPasswordSet,
+            Role: User.Role,
+            Profile: User.Profile
+        );
+        return Result;
+    }
 }

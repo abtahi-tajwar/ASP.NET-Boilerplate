@@ -1,14 +1,7 @@
-using System.Text;
 using ASPBoilerplate;
 using ASPBoilerplate.Configurations;
-using ASPBoilerplate.Filters;
-using ASPBoilerplate.Middlewares;
 using ASPBoilerplate.Modules.File;
 using ASPBoilerplate.Utils;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.IdentityModel.Tokens;
 using SignalRChat.Hubs;
 
 

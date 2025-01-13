@@ -17,15 +17,22 @@ namespace SignalRChat.Hubs
         }
         public async Task SendMessage(string user, string message, string toUser)
         {
-            Console.WriteLine($"{user}, {toUser}, {message}");
-            if (toUser != null && toUser != "")
-            {
-                await Clients.Client(toUser).SendAsync("ReceiveMessage", message);
-            }
-            else
-            {
+            // Console.WriteLine($"{user}, {toUser}, {message}");
+            // if (toUser != null && toUser != "")
+            // {
+            //     await Clients.Client(toUser).SendAsync("ReceiveMessage", message);
+            // }
+            // else
+            // {
 
-                await Clients.All.SendAsync("ReceiveMessage", user, message);
+            //     await Clients.All.SendAsync("ReceiveMessage", user, message);
+            // }
+            try
+            {
+                await _service.SendMessageToUserAsync(Clients, user, message, toUser);
+            } catch (Exception e) {
+                Console.WriteLine($"Failed to send message. {e.Message}");
+                Context.Abort(); 
             }
         }
 
@@ -54,7 +61,8 @@ namespace SignalRChat.Hubs
                     var Role = user.FindFirst(ClaimTypes.Role)?.Value;
                     // Optionally, log the connection for debugging
                     Console.WriteLine($"User connected: {ConnectionId}");
-                    if (UserId == null) {
+                    if (UserId == null)
+                    {
                         throw new Exception("User ID not found, aborting connection...");
                     }
                     await _service.RegisterConnnectionAsync(UserId, ConnectionId);
@@ -66,7 +74,9 @@ namespace SignalRChat.Hubs
                     Context.Abort(); // Disconnect the client if not authenticated
                 }
 
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine(e.Message);
                 Context.Abort();
             }
@@ -74,7 +84,8 @@ namespace SignalRChat.Hubs
             await base.OnConnectedAsync();
         }
 
-        public override async Task OnDisconnectedAsync(Exception? e) {
+        public override async Task OnDisconnectedAsync(Exception? e)
+        {
             Console.WriteLine($"Connection disconnected {e?.Message}");
             var user = Context.User;
             var UserId = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;

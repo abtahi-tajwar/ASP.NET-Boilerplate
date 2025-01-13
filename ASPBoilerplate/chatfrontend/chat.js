@@ -32,3 +32,37 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     });
     event.preventDefault();
 });
+
+async function getUsers () {
+    const url = `${apiUrl}/admin/user/list`;
+
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${getToken()}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    var selectInnerHtml = '';
+    data.forEach(user => {
+        selectInnerHtml += /*html*/`
+            <option value="${user.id}">${user.username}</option>
+        `
+    })
+    document.getElementById("toUserInput").innerHTML = selectInnerHtml;
+    return data;
+  } catch (error) {
+    console.error('Error fetching users:', error.message);
+    throw error; // Re-throw the error to handle it later if needed
+  }
+}
+
+getUsers();

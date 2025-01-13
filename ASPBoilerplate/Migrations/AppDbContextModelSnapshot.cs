@@ -39,6 +39,51 @@ namespace ASPBoilerplate.Migrations
                     b.ToTable("ChatHubConnections");
                 });
 
+            modelBuilder.Entity("ASPBoilerplate.Modules.Chat.ChatInbox", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MessagedUserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ChatInboxes");
+                });
+
+            modelBuilder.Entity("ASPBoilerplate.Modules.Chat.MessageHistory", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ReceiverId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("SentAt")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MessageHistories");
+                });
+
             modelBuilder.Entity("ASPBoilerplate.Modules.File.FileEntity", b =>
                 {
                     b.Property<string>("Id")

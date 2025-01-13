@@ -26,6 +26,19 @@ namespace ASPBoilerplate.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ChatInboxes",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    MessagedUserId = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChatInboxes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Files",
                 columns: table => new
                 {
@@ -41,6 +54,21 @@ namespace ASPBoilerplate.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Files", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MessageHistories",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    SenderId = table.Column<string>(type: "TEXT", nullable: false),
+                    ReceiverId = table.Column<string>(type: "TEXT", nullable: false),
+                    SentAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Message = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MessageHistories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -265,7 +293,13 @@ namespace ASPBoilerplate.Migrations
                 name: "ChatHubConnections");
 
             migrationBuilder.DropTable(
+                name: "ChatInboxes");
+
+            migrationBuilder.DropTable(
                 name: "Files");
+
+            migrationBuilder.DropTable(
+                name: "MessageHistories");
 
             migrationBuilder.DropTable(
                 name: "RestrictedUserProfiles");

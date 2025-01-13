@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPBoilerplate.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250112014719_InitialMigration")]
+    [Migration("20250113003002_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -40,6 +40,51 @@ namespace ASPBoilerplate.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ChatHubConnections");
+                });
+
+            modelBuilder.Entity("ASPBoilerplate.Modules.Chat.ChatInbox", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MessagedUserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ChatInboxes");
+                });
+
+            modelBuilder.Entity("ASPBoilerplate.Modules.Chat.MessageHistory", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ReceiverId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("SentAt")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MessageHistories");
                 });
 
             modelBuilder.Entity("ASPBoilerplate.Modules.File.FileEntity", b =>

@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using ASPBoilerplate.Modules.User.Entity;
 
 namespace ASPBoilerplate.Modules.User.Dtos;
 
@@ -13,4 +14,14 @@ public record CreateUserAdminDto (
     [Required]
     [EnumValidatorFilter(typeof(USER_ROLES), ErrorMessage = "Cannot detect User type")]
     string Role
+);
+
+public record GetRestrictedUserDetailsResponseDto (
+    string Id,
+    string UserName,
+    string?  Email,
+    bool IsEmailConfirmed,
+    bool IsPasswordSet,
+    USER_ROLES Role,
+    RestrictedUserProfileEntity? Profile
 );

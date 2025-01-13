@@ -6,11 +6,13 @@ using ASPBoilerplate.Modules.Auth;
 using ASPBoilerplate.Modules.User.Dtos;
 using ASPBoilerplate.Modules.User.Entity;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace ASPBoilerplate.Controllers;
 
 [ApiController]
-[Route("/user")]public class UserController : ControllerBase
+[Route("/user")]
+public class UserController : ControllerBase
 {
     [HttpGet("list", Name = "ListUsers")]
     [AuthorizationFilter("Admin")]
@@ -19,12 +21,13 @@ namespace ASPBoilerplate.Controllers;
         var users = context.UnrestrictedUsers.ToList();
         return users;
     }
-    
+
 }
 
 [ApiController]
 [Route("admin/user")]
-public class UserControllerAdmin : ControllerBase{
+public class UserControllerAdmin : ControllerBase
+{
     [HttpGet("list", Name = "ListUsersAdmin")]
     [Authorize("Admin")]
     public IEnumerable<RestrictedUserEntity> List(AppDbContext context)
@@ -33,9 +36,30 @@ public class UserControllerAdmin : ControllerBase{
         return users;
     }
     [HttpPost("create", Name = "CreateUserAdmin")]
-    public IResult CreateUserAdmin (CreateUserAdminDto body, AppDbContext context) {
+    public IResult CreateUserAdmin(CreateUserAdminDto body, AppDbContext context)
+    {
         var service = new UserService(context);
         RestrictedUserEntity newUser = service.RegisterUserEmailAdmin(body);
         return CustomResponse.Ok(newUser, "User Registered");
-    }   
+    }
+
+    [HttpGet("my-profile", Name = "MyProfileAdmin")]
+    public IResult GetMyProfile(AppDbContext context)
+    {
+        try
+        {
+            var service = new UserService(context);
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; // Standard claim for user ID
+            service.GetUserProfile(UserId);
+            if (UserId == null)
+            {
+                return CustomResponse.BadRequest("Can't extract profile information of this user");
+            }
+            return CustomResponse.Ok(null);
+        }
+        catch (Exception e)
+        {
+            return CustomResponse.BadRequest(e.Message);
+        }
+    }
 }
