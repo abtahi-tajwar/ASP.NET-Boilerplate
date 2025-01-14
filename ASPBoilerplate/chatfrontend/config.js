@@ -7,3 +7,11 @@ function setToken (token) {
 function getToken () {
     return localStorage.getItem("token")
 }
+
+function setProfile (profile) {
+    localStorage.setItem("profile", JSON.stringify(profile))
+}
+function getProfile () {
+    const profileJSON = localStorage.getItem("profile");
+    return profileJSON ? JSON.parse(profileJSON) : null;
+}

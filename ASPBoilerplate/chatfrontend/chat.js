@@ -24,7 +24,8 @@ connection.start({ withCredentials: false, logging: true }).then(function () {
 });
 
 document.getElementById("sendButton").addEventListener("click", function (event) {
-    var user = document.getElementById("userInput").value;
+    var user = getProfile()?.id;
+    debugger;
     var toUser = document.getElementById("toUserInput").value;
     var message = document.getElementById("messageInput").value;
     connection.invoke("SendMessage", user, message, toUser).catch(function (err) {
@@ -33,7 +34,7 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     event.preventDefault();
 });
 
-async function getUsers () {
+async function fetchUsers () {
     const url = `${apiUrl}/admin/user/list`;
 
   try {
@@ -65,4 +66,30 @@ async function getUsers () {
   }
 }
 
-getUsers();
+async function fetchProfile () {
+    const url = `${apiUrl}/admin/user/my-profile`;
+
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${getToken()}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    setProfile(data.data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching users:', error.message);
+    throw error; // Re-throw the error to handle it later if needed
+  }
+}
+
+fetchUsers();
+fetchProfile();

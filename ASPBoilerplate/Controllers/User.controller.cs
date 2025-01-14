@@ -50,12 +50,12 @@ public class UserControllerAdmin : ControllerBase
         {
             var service = new UserService(context);
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; // Standard claim for user ID
-            service.GetUserProfile(UserId);
-            if (UserId == null)
+            var Profile = service.GetUserProfile(UserId);
+            if (Profile == null)
             {
                 return CustomResponse.BadRequest("Can't extract profile information of this user");
             }
-            return CustomResponse.Ok(null);
+            return CustomResponse.Ok(Profile);
         }
         catch (Exception e)
         {

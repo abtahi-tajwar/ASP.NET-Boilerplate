@@ -29,10 +29,11 @@ namespace SignalRChat.Hubs
             // }
             try
             {
-                await _service.SendMessageToUserAsync(Clients, user, message, toUser);
+                Console.WriteLine($"{user}, {toUser}, {message}");
+                await _service.SendMessageToUserAsync(Clients, message, user, toUser);
             } catch (Exception e) {
                 Console.WriteLine($"Failed to send message. {e.Message}");
-                Context.Abort(); 
+                // Context.Abort(); 
             }
         }
 
