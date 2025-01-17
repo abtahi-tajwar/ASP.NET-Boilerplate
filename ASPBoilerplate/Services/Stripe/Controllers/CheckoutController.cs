@@ -5,7 +5,7 @@ using ASPBoilerplate.Services.Stripe;
 namespace StripeCheckoutDemo.Controllers
 {
     [ApiController]
-    [Route("/checkout")]
+    [Route("/stripe/checkout")]
     public class CheckoutController : Controller
     {
         private readonly IConfiguration _configuration;

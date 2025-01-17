@@ -34,8 +34,9 @@ MailService.ConfigureServices(builder.Services);
 // Initialize Jwt config
 JwtTokenSettings.Initialize(builder);
 
-// Initialize Stripe
+// Initialize Payment gateways
 StripeSettings.Initialize(builder);
+SSLCommerzeSettings.Initialize(builder);
 
 builder.Services.AddSqlite<AppDbContext>(connectionString);
 builder.Services.AddSignalR();
