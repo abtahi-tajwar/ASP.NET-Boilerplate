@@ -63,8 +63,9 @@ public class AuthControllerAdmin : ControllerBase
     }
 
     [HttpPost("login", Name="LoginAdmin")]
-    public IResult LoginAdmin (LoginAdminDto body, AppDbContext context) {
+    public IResult LoginAdmin (LoginAdminDto body, AppDbContext context, ILogger<AuthControllerAdmin> logger) {
         try {
+            logger.LogInformation("Starting user login process...");
             var service = new AuthService(context);
             var response = service.Login(body.Email, body.Password, body.Device);
             

@@ -21,6 +21,11 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Logger
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
+
 // Initialize General Settings
 GeneralSettings.Initialize(builder);
 
@@ -40,6 +45,8 @@ SSLCommerzeSettings.Initialize(builder);
 
 builder.Services.AddSqlite<AppDbContext>(connectionString);
 builder.Services.AddSignalR();
+
+builder.Logging.AddConsole();
 
 var app = builder.Build();
 
