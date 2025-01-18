@@ -2,12 +2,16 @@ using ASPBoilerplate;
 using ASPBoilerplate.Configurations;
 using ASPBoilerplate.Modules.File;
 using ASPBoilerplate.Utils;
+using Hangfire;
 using SignalRChat.Hubs;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection");
+builder.Services.AddSqlite<AppDbContext>(connectionString);
+
 builder.Services.AddControllers();
 builder.Services.AddCors(options =>
 {
@@ -43,7 +47,10 @@ JwtTokenSettings.Initialize(builder);
 StripeSettings.Initialize(builder);
 SSLCommerzeSettings.Initialize(builder);
 
-builder.Services.AddSqlite<AppDbContext>(connectionString);
+// Initialize scheduler
+HangfireSettings.Initialize(builder);
+
+
 builder.Services.AddSignalR();
 
 builder.Logging.AddConsole();
@@ -55,12 +62,17 @@ app.UseCors("AllowSpecificOrigins");
 
 // app.UseAntiforgery();
 
-app.MapGet("/", () => "Connection is OK!");
+app.MapGet("/", () => {
+    HangfireSettings.InitializeJobs();
+    return "Connection is OK!";
+});
 // app.UseHttpsRedirection();
 app.MapControllers();
-
+app.UseHangfireDashboard();
 app.FileRoutes();
 app.MapHub<ChatHub>("/chatHub");
 
 
+
 app.Run();
+
