@@ -13,6 +13,7 @@
       <PackageReference Include="Hangfire.SQLite" Version="1.4.2" />
       <PackageReference Include="Hangfire.Storage.SQLite" Version="0.4.2" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.1" />
       <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.1" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -23,6 +24,7 @@
       <PackageReference Include="Nancy" Version="2.0.0" />
       <PackageReference Include="NETCore.MailKit" Version="2.1.0" />
       <PackageReference Include="Stripe.net" Version="47.3.0-beta.1" />
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
     </ItemGroup>
 
     <ItemGroup>

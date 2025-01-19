@@ -4,6 +4,10 @@ using ASPBoilerplate.Modules.File;
 using ASPBoilerplate.Utils;
 using Hangfire;
 using SignalRChat.Hubs;
+using Microsoft.AspNetCore.OpenApi;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +32,9 @@ builder.Services.AddCors(options =>
 // Logger
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
+
+// Swagger
+SwaggerSettings.Initialize(builder);
 
 
 // Initialize General Settings
@@ -55,7 +62,12 @@ builder.Services.AddSignalR();
 
 builder.Logging.AddConsole();
 
+builder.Services.AddOpenApi();
+
 var app = builder.Build();
+
+
+app.MapOpenApi();
 
 // Use the configured CORS policy
 app.UseCors("AllowSpecificOrigins");
@@ -63,7 +75,7 @@ app.UseCors("AllowSpecificOrigins");
 // app.UseAntiforgery();
 
 app.MapGet("/", () => {
-    HangfireSettings.InitializeJobs();
+    // HangfireSettings.InitializeJobs();
     return "Connection is OK!";
 });
 // app.UseHttpsRedirection();
@@ -71,6 +83,13 @@ app.MapControllers();
 app.UseHangfireDashboard();
 app.FileRoutes();
 app.MapHub<ChatHub>("/chatHub");
+
+// Swagger
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 
 

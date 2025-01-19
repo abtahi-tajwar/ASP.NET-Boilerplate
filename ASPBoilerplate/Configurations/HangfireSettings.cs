@@ -8,6 +8,7 @@ namespace ASPBoilerplate.Configurations;
 public class HangfireSettings
 {
     public static string? DatabaseConnection;
+    public static int PollingInternvalInSeconds = 15;
 
     public static void Initialize(WebApplicationBuilder builder)
     {
@@ -22,6 +23,12 @@ public class HangfireSettings
 
         // Add the processing server as IHostedService
         builder.Services.AddHangfireServer();
+
+        builder.Services.AddSingleton(provider => new BackgroundJobServerOptions
+        {
+            WorkerCount = 1,
+            SchedulePollingInterval = TimeSpan.FromSeconds(PollingInternvalInSeconds)
+        });
 
         // Add framework services.
         // builder.Services.AddMvc();
