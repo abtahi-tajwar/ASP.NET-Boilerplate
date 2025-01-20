@@ -7,6 +7,7 @@ using ASPBoilerplate.Modules.User.Dtos;
 using ASPBoilerplate.Modules.User.Entity;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using ASPBoilerplate.Services;
 
 namespace ASPBoilerplate.Controllers;
 

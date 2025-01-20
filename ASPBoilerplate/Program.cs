@@ -57,6 +57,9 @@ SSLCommerzeSettings.Initialize(builder);
 // Initialize scheduler
 HangfireSettings.Initialize(builder);
 
+// Initialize caching
+RedisSettings.Initialize(builder);
+
 
 builder.Services.AddSignalR();
 
