@@ -8,6 +8,9 @@ using ASPBoilerplate.Modules.User.Entity;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using ASPBoilerplate.Services;
+using Nancy.Json;
+using System.Text.Json;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace ASPBoilerplate.Controllers;
 
@@ -29,12 +32,24 @@ public class UserController : ControllerBase
 [Route("admin/user")]
 public class UserControllerAdmin : ControllerBase
 {
+    private IDistributedCache _cache;
+    public UserControllerAdmin(IDistributedCache cache)
+    {
+        _cache = cache;
+    }
+    
     [HttpGet("list", Name = "ListUsersAdmin")]
     [Authorize("Admin")]
-    public IEnumerable<RestrictedUserEntity> List(AppDbContext context)
+    public IResult List(AppDbContext context)
     {
-        var users = context.RestrictedUsers.ToList();
-        return users;
+        // var users = context.RestrictedUsers.ToList();
+        var _cacheService = new CacheService(_cache);
+        var users = _cacheService.GetOrCreate<List<RestrictedUserEntity>>(
+            "user",
+            () => context.RestrictedUsers.ToList()
+        );
+        return CustomResponse.Ok(users);
+
     }
     [HttpPost("create", Name = "CreateUserAdmin")]
     public IResult CreateUserAdmin(CreateUserAdminDto body, AppDbContext context)
