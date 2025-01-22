@@ -36,13 +36,17 @@ public class AuthController : ControllerBase
 [Route("/admin/auth")]
 public class AuthControllerAdmin : ControllerBase
 {
+    private readonly AuthService _service;
+    public AuthControllerAdmin(AuthService service)
+    {
+        _service = service;
+    }
     [HttpPost("get-otp", Name = "GetOtpAdmin")]
     public IResult GetOtpAdmin(GetOtpAdminDto body, AppDbContext context)
     {
         try
         {
-            var service = new AuthService(context);
-            var Otp = service.GetOtp(body.Email);
+            var Otp = _service.GetOtp(body.Email);
             return CustomResponse.Ok("Otp sent to users inbox, please check");
         }
         catch (Exception e)
@@ -54,8 +58,7 @@ public class AuthControllerAdmin : ControllerBase
     [HttpPost("set-password", Name = "SetPasswordAdmin")]
     public IResult SetPasswordAdmin (SetPasswordAdminDto body, AppDbContext context) {
         try {
-            var service = new AuthService(context);
-            service.SetPasswordAdmin(body.Email, body.Password, body.Otp);
+            _service.SetPasswordAdmin(body.Email, body.Password, body.Otp);
             return CustomResponse.Ok(null, "Password Successfully Set");
         } catch (Exception e) {
             return CustomResponse.BadRequest($"{e.Message}");
@@ -66,8 +69,7 @@ public class AuthControllerAdmin : ControllerBase
     public IResult LoginAdmin (LoginAdminDto body, AppDbContext context, ILogger<AuthControllerAdmin> logger) {
         try {
             logger.LogInformation("Starting user login process...");
-            var service = new AuthService(context);
-            var response = service.Login(body.Email, body.Password, body.Device);
+            var response = _service.Login(body.Email, body.Password, body.Device);
             
             return CustomResponse.Ok(response, "Logged In Successfully");
         } catch (Exception e) {
@@ -79,12 +81,17 @@ public class AuthControllerAdmin : ControllerBase
 [ApiController]
 [Route("/dev/auth")]
 public class AuthControllerAdminDev : ControllerBase {
+    
+    private readonly AuthService _service;
+    public AuthControllerAdminDev (AuthService service) {
+        _service = service;
+    }
+
     [HttpPost("set-password")]
     [DevAuthorization]
     public IResult SetPasswordAdminDev (SetPasswordAdminDto body, AppDbContext context) {
         try {
-            var service = new AuthService(context);
-            service.SetPasswordAdminDev(body.Email, body.Password, body.Otp);
+            _service.SetPasswordAdminDev(body.Email, body.Password, body.Otp);
             return CustomResponse.Ok(null, "Password Successfully Set");
         } catch (Exception e) {
             return CustomResponse.BadRequest($"{e.Message}");

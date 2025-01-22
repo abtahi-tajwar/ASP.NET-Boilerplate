@@ -3,7 +3,7 @@ using ASPBoilerplate.Configurations;
 using Microsoft.Extensions.Caching.Distributed;
 
 namespace ASPBoilerplate.Services;
-class CacheService
+public class CacheService
 {
     private IDistributedCache _cache;
 
@@ -39,5 +39,12 @@ class CacheService
         } else {
             return JsonSerializer.Deserialize<T>(cachedItem)!;
         }
+    }
+    public void Create (string key, object val) {
+        _cache.SetString(
+            key, 
+            JsonSerializer.Serialize(val), 
+            new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = RedisSettings.DefaultExpiry }
+        );
     }
 }

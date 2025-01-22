@@ -111,7 +111,6 @@ namespace ASPBoilerplate.Migrations
                     IsEmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
                     IsPasswordSet = table.Column<bool>(type: "INTEGER", nullable: false),
                     Role = table.Column<int>(type: "INTEGER", nullable: false),
-                    ProfileId = table.Column<string>(type: "TEXT", nullable: true),
                     OtpId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -121,11 +120,6 @@ namespace ASPBoilerplate.Migrations
                         name: "FK_RestrictedUsers_RestrictedUserOtps_OtpId",
                         column: x => x.OtpId,
                         principalTable: "RestrictedUserOtps",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_RestrictedUsers_RestrictedUsers_ProfileId",
-                        column: x => x.ProfileId,
-                        principalTable: "RestrictedUsers",
                         principalColumn: "Id");
                 });
 
@@ -242,7 +236,8 @@ namespace ASPBoilerplate.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_RestrictedUserProfiles_UserId",
                 table: "RestrictedUserProfiles",
-                column: "UserId");
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_RestrictedUsers_Email",
@@ -254,11 +249,6 @@ namespace ASPBoilerplate.Migrations
                 name: "IX_RestrictedUsers_OtpId",
                 table: "RestrictedUsers",
                 column: "OtpId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RestrictedUsers_ProfileId",
-                table: "RestrictedUsers",
-                column: "ProfileId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RestrictedUserTokens_RestrictedUserEntityId",

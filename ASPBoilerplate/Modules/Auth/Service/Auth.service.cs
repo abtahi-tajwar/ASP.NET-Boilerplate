@@ -1,18 +1,24 @@
 using System;
 using ASPBoilerplate.Configurations;
 using ASPBoilerplate.Modules.User.Entity;
+using ASPBoilerplate.Services;
 using ASPBoilerplate.Shared.JwtToken;
 using ASPBoilerplate.Utils;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Stripe;
 
 namespace ASPBoilerplate.Modules.Auth;
 
-public class AuthService
+public class AuthService : AppBaseService
 {
     public AppDbContext _context;
-    public AuthService(AppDbContext context)
+    public CacheService _cache;
+
+    public AuthService(AppDbContext context, CacheService cache) : base(context, cache)
     {
         _context = context;
+        _cache = cache;
     }
     public RestrictedUserUserOtpEntity GetOtp(string email)
     {
@@ -48,7 +54,8 @@ public class AuthService
             throw new Exception("Not user registered using this email");
         }
 
-        if (User.Otp?.Otp != otp) {
+        if (User.Otp?.Otp != otp)
+        {
             throw new Exception("Otp does not match, cannot set password");
         }
 
@@ -83,24 +90,8 @@ public class AuthService
             Role = User.Role.ToString()
         });
 
-        var ExistingToken = _context.RestrictedUserTokens.FirstOrDefault(token => (token.UserId == User.Id && token.DeviceSignature == Device));
 
-        if (ExistingToken == null)
-        {
-
-            _context.RestrictedUserTokens.Add(new()
-            {
-                Token = token,
-                UserId = User.Id,
-                DeviceSignature = Device,
-                Expiration = DateTime.UtcNow.AddHours(JwtTokenSettings.ExpireInHour),
-                CreatedAt = DateTime.UtcNow
-            });
-        } else {
-            ExistingToken.Token = token;
-        }
-
-        _context.SaveChanges();
+        var NewToken = GenerateUserToken(User, Email, Device);
 
         var response = new LoginAdminResponseDto(
             User: User,
@@ -128,6 +119,44 @@ public class AuthService
         User.IsPasswordSet = true;
 
         _context.SaveChanges();
+    }
+
+    public RestrictedUserTokenEntity GenerateUserToken(RestrictedUserEntity user, string email, string? device)
+    {
+
+        var token = JwtTokenService.GenerateToken(new JwtTokenPayload()
+        {
+            UserId = user.Id,
+            Email = email,
+            Role = user.Role.ToString()
+        });
+
+        var ExistingToken = _context.RestrictedUserTokens.FirstOrDefault(token => (token.UserId == user.Id && token.DeviceSignature == device));
+        RestrictedUserTokenEntity NewToken = new()
+        {
+            Token = token,
+            UserId = user.Id,
+            DeviceSignature = device,
+            Expiration = DateTime.UtcNow.AddHours(JwtTokenSettings.ExpireInHour),
+            CreatedAt = DateTime.UtcNow
+        };
+
+        if (ExistingToken == null)
+        {
+
+            _context.RestrictedUserTokens.Add(NewToken);
+        }
+        else
+        {
+            ExistingToken.Token = token;
+        }
+
+
+        _cache.Create($"user:{device}", token);
+
+        _context.SaveChanges();
+
+        return NewToken;
     }
 
 }

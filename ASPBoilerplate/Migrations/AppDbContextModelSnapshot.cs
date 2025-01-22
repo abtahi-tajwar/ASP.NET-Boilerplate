@@ -140,9 +140,6 @@ namespace ASPBoilerplate.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ProfileId")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("Role")
                         .HasColumnType("INTEGER");
 
@@ -156,8 +153,6 @@ namespace ASPBoilerplate.Migrations
                         .IsUnique();
 
                     b.HasIndex("OtpId");
-
-                    b.HasIndex("ProfileId");
 
                     b.ToTable("RestrictedUsers");
                 });
@@ -181,7 +176,8 @@ namespace ASPBoilerplate.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("RestrictedUserProfiles");
                 });
@@ -358,20 +354,14 @@ namespace ASPBoilerplate.Migrations
                         .WithMany()
                         .HasForeignKey("OtpId");
 
-                    b.HasOne("ASPBoilerplate.Modules.User.Entity.RestrictedUserEntity", "Profile")
-                        .WithMany()
-                        .HasForeignKey("ProfileId");
-
                     b.Navigation("Otp");
-
-                    b.Navigation("Profile");
                 });
 
             modelBuilder.Entity("ASPBoilerplate.Modules.User.Entity.RestrictedUserProfileEntity", b =>
                 {
                     b.HasOne("ASPBoilerplate.Modules.User.Entity.RestrictedUserEntity", "UserEntity")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("Profile")
+                        .HasForeignKey("ASPBoilerplate.Modules.User.Entity.RestrictedUserProfileEntity", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -424,6 +414,8 @@ namespace ASPBoilerplate.Migrations
 
             modelBuilder.Entity("ASPBoilerplate.Modules.User.Entity.RestrictedUserEntity", b =>
                 {
+                    b.Navigation("Profile");
+
                     b.Navigation("Tokens");
                 });
 

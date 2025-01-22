@@ -16,7 +16,8 @@ public static class JwtTokenService
             new Claim(JwtRegisteredClaimNames.Sub, data.UserId),
             new Claim(JwtRegisteredClaimNames.UniqueName, data.Email),
             new Claim(ClaimTypes.Role, data.Role ?? ""),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) // Unique token ID
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), // Unique token ID
+            new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.AddHours(JwtTokenSettings.ExpireInHour).ToString(), ClaimValueTypes.Integer64) // Issued at time
         };
         if (JwtTokenSettings.Secret == null) {
             throw new Exception("Please provide valid jwt secret");
