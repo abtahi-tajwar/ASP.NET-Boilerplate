@@ -11,5 +11,7 @@ public enum USER_ROLES
     [EnumMember(Value="ADMIN")]
     ADMIN,
     [EnumMember(Value ="SUPER_ADMIN")]
-    SUPER_ADMIN
+    SUPER_ADMIN,
+    [EnumMember(Value ="INVALID")]
+    INVALID
 }

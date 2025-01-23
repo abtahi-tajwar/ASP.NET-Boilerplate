@@ -182,40 +182,7 @@ namespace ASPBoilerplate.Migrations
                     b.ToTable("RestrictedUserProfiles");
                 });
 
-            modelBuilder.Entity("ASPBoilerplate.Modules.User.Entity.RestrictedUserTokenEntity", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("DeviceSignature")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("Expiration")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("RestrictedUserEntityId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RestrictedUserEntityId");
-
-                    b.ToTable("RestrictedUserTokens");
-                });
-
-            modelBuilder.Entity("ASPBoilerplate.Modules.User.Entity.RestrictedUserUserOtpEntity", b =>
+            modelBuilder.Entity("ASPBoilerplate.Modules.User.Entity.UserOtpEntity", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -237,10 +204,10 @@ namespace ASPBoilerplate.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RestrictedUserOtps");
+                    b.ToTable("UserOtps");
                 });
 
-            modelBuilder.Entity("ASPBoilerplate.Modules.User.UnrestrictedTokenEntity", b =>
+            modelBuilder.Entity("ASPBoilerplate.Modules.User.Entity.UserTokenEntity", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -255,8 +222,14 @@ namespace ASPBoilerplate.Migrations
                     b.Property<DateTime?>("Expiration")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Otp")
+                    b.Property<string>("RestrictedUserEntityId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Token")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UnrestrictedUserEntityId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
@@ -265,9 +238,11 @@ namespace ASPBoilerplate.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("RestrictedUserEntityId");
 
-                    b.ToTable("UnrestrictedUserTokens");
+                    b.HasIndex("UnrestrictedUserEntityId");
+
+                    b.ToTable("UserTokens");
                 });
 
             modelBuilder.Entity("ASPBoilerplate.Modules.User.UnrestrictedUserEntity", b =>
@@ -327,30 +302,9 @@ namespace ASPBoilerplate.Migrations
                     b.ToTable("UnrestrictedUserProfiles");
                 });
 
-            modelBuilder.Entity("ASPBoilerplate.Modules.User.UnrestrictedUserUserOtpEntity", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("ExpireAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Otp")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UnrestrictedUserOtps");
-                });
-
             modelBuilder.Entity("ASPBoilerplate.Modules.User.Entity.RestrictedUserEntity", b =>
                 {
-                    b.HasOne("ASPBoilerplate.Modules.User.Entity.RestrictedUserUserOtpEntity", "Otp")
+                    b.HasOne("ASPBoilerplate.Modules.User.Entity.UserOtpEntity", "Otp")
                         .WithMany()
                         .HasForeignKey("OtpId");
 
@@ -368,27 +322,20 @@ namespace ASPBoilerplate.Migrations
                     b.Navigation("UserEntity");
                 });
 
-            modelBuilder.Entity("ASPBoilerplate.Modules.User.Entity.RestrictedUserTokenEntity", b =>
+            modelBuilder.Entity("ASPBoilerplate.Modules.User.Entity.UserTokenEntity", b =>
                 {
                     b.HasOne("ASPBoilerplate.Modules.User.Entity.RestrictedUserEntity", null)
                         .WithMany("Tokens")
                         .HasForeignKey("RestrictedUserEntityId");
-                });
 
-            modelBuilder.Entity("ASPBoilerplate.Modules.User.UnrestrictedTokenEntity", b =>
-                {
-                    b.HasOne("ASPBoilerplate.Modules.User.UnrestrictedUserEntity", "UserEntity")
+                    b.HasOne("ASPBoilerplate.Modules.User.UnrestrictedUserEntity", null)
                         .WithMany("Tokens")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("UserEntity");
+                        .HasForeignKey("UnrestrictedUserEntityId");
                 });
 
             modelBuilder.Entity("ASPBoilerplate.Modules.User.UnrestrictedUserEntity", b =>
                 {
-                    b.HasOne("ASPBoilerplate.Modules.User.UnrestrictedUserUserOtpEntity", "Otp")
+                    b.HasOne("ASPBoilerplate.Modules.User.Entity.UserOtpEntity", "Otp")
                         .WithMany()
                         .HasForeignKey("OtpId");
 

@@ -21,23 +21,23 @@ public class AuthService
         _context = context;
         _cache = cache;
     }
-    public RestrictedUserUserOtpEntity GetOtp(string email)
+    public UserOtpEntity GetOtp(string email)
     {
-        RestrictedUserEntity User = _context.RestrictedUsers.FirstOrDefault(User => User.Email == email);
+        RestrictedUserEntity? User = _context.RestrictedUsers.FirstOrDefault(User => User.Email == email);
         if (User == null)
         {
             throw new Exception("Not user registered using this email");
         }
         var mail = new MailService();
         int Otp = mail.SetOTP(email);
-        RestrictedUserUserOtpEntity OtpEntry = new()
+        UserOtpEntity OtpEntry = new()
         {
             UserId = User.Id,
             Otp = Otp.ToString(),
             CreatedAt = DateTime.Now,
             ExpireAt = DateTime.Today.AddHours(48)
         };
-        _context.RestrictedUserOtps.Add(OtpEntry);
+        _context.UserOtps.Add(OtpEntry);
         User.Otp = OtpEntry;
 
         _context.SaveChanges();
@@ -88,7 +88,8 @@ public class AuthService
         {
             UserId = User.Id,
             Email = Email,
-            Role = User.Role.ToString()
+            Role = User.Role.ToString(),
+            Device = Device
         });
 
 
@@ -96,7 +97,7 @@ public class AuthService
 
         var response = new LoginAdminResponseDto(
             User: User,
-            Token: token
+            Token: NewToken.Token
         );
 
         return response;
@@ -122,58 +123,65 @@ public class AuthService
         _context.SaveChanges();
     }
 
-    public RestrictedUserTokenEntity GenerateUserToken(RestrictedUserEntity user, string email, string? device)
+    public UserTokenEntity GenerateUserToken(RestrictedUserEntity user, string email, string? device)
     {
 
-        var token = JwtTokenService.GenerateToken(new JwtTokenPayload()
+        var NewToken = JwtTokenService.GenerateToken(new JwtTokenPayload()
         {
             UserId = user.Id,
             Email = email,
-            Role = user.Role.ToString()
+            Role = user.Role.ToString(),
+            Device = device
         });
 
-        var ExistingToken = _context.RestrictedUserTokens.FirstOrDefault(token => (token.UserId == user.Id && token.DeviceSignature == device));
-        RestrictedUserTokenEntity NewToken = new()
-        {
-            Token = token,
-            UserId = user.Id,
-            DeviceSignature = device,
-            Expiration = DateTime.UtcNow.AddHours(JwtTokenSettings.ExpireInHour),
-            CreatedAt = DateTime.UtcNow
-        };
+        var ExistingToken = _context.UserTokens.FirstOrDefault(token => (token.UserId == user.Id && token.DeviceSignature == device));
 
         if (ExistingToken == null)
         {
 
-            _context.RestrictedUserTokens.Add(NewToken);
+            _context.UserTokens.Add(NewToken);
         }
         else
         {
-            ExistingToken.Token = token;
+            ExistingToken.Token = NewToken.Token;
         }
 
+        string DeviceSnakeCase = Helpers.ConvertToSnakCase(device);
 
-        _cache.Create($"user:{device}", token);
+        _cache.Create($"user:{DeviceSnakeCase}", NewToken);
 
         _context.SaveChanges();
 
         return NewToken;
     }
 
-    public bool ValidateToken (string? token) {
-        Console.WriteLine($"Validating token: {token}");
-        if (token == null) return false;
-        bool IsValid = true;
+    public TokenValidationResponse ValidateToken (string? token) {
+        if (token == null) return null;
         try {
             var Res = JwtTokenService.DecodeAndValidateToken(token);
             // _cache.GetString($"Something {Res.UserId}_{Res.Email}_{Res.Role}");
-            Console.WriteLine($"Something {Res.UserId}_{Res.Email}_{Res.Role}");
+            Console.WriteLine($"Something {Res.UserId}_{Res.Email}_{Res.Role}_{Res.Device}");
+
+            var Token = _cache.Get<UserTokenEntity>($"user:{Helpers.ConvertToSnakCase(Res.Device)}");
+
+            if (Token == null) {
+                Token = _context.UserTokens.FirstOrDefault(t => t.Token == token);
+            }
+
+            if (Token.Expiration < DateTime.UtcNow) {
+                throw new Exception("Token expired");
+            }
+            
+            if (Token.Token != token) {
+                throw new Exception("Invalid token!");
+            }
+
+            return new TokenValidationResponse(Token, Res.Role, true);
         } catch (Exception e) {
-            Console.WriteLine($"Failed to validate token. {e.Message}");
-            IsValid = false;
+            Console.WriteLine($"Access unauthorized. {e.Message}");
+            return new TokenValidationResponse(null, null, false);
         }
         
-        return IsValid;
     }
 
 }

@@ -11,4 +11,4 @@ fi
 
 # Run the .NET application
 echo "Running the .NET application..."
-dotnet run
+dotnet watch

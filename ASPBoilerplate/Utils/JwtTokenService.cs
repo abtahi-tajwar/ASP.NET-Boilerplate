@@ -6,18 +6,23 @@ using System.Text;
 using ASPBoilerplate.Configurations;
 using System.Diagnostics;
 using ASPBoilerplate.Shared.JwtToken;
+using ASPBoilerplate.Modules.User.Entity;
 
 public static class JwtTokenService
 {
-    public static string GenerateToken(JwtTokenPayload data)
+    public static UserTokenEntity GenerateToken(JwtTokenPayload data)
     {
+        var issuedAt = DateTimeOffset.UtcNow;
+        var expiration = DateTime.UtcNow.AddHours(JwtTokenSettings.ExpireInHour); 
+        
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, data.UserId),
             new Claim(JwtRegisteredClaimNames.UniqueName, data.Email),
             new Claim(ClaimTypes.Role, data.Role ?? ""),
+            new Claim(ClaimTypes.WindowsDeviceClaim, data.Device ?? ""),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), // Unique token ID
-            new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.AddHours(JwtTokenSettings.ExpireInHour).ToString(), ClaimValueTypes.Integer64) // Issued at time
+            new Claim(JwtRegisteredClaimNames.Iat, issuedAt.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64) // Issued at time
         };
         if (JwtTokenSettings.Secret == null)
         {
@@ -31,11 +36,19 @@ public static class JwtTokenService
             issuer: JwtTokenSettings.Issuer,
             audience: JwtTokenSettings.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(JwtTokenSettings.ExpireInHour),
+            expires: expiration,
             signingCredentials: credentials
         );
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+        return new UserTokenEntity()
+        {
+            UserId = data.UserId,
+            Token = tokenString,
+            Expiration = expiration,
+            DeviceSignature = data.Device,
+            CreatedAt = DateTime.UtcNow
+        };
     }
 
     public static JwtTokenPayload DecodeAndValidateToken(string token)
@@ -73,7 +86,8 @@ public static class JwtTokenService
             {
                 UserId = principal.FindFirst(ClaimTypes.NameIdentifier)!.Value,
                 Email = principal.FindFirst(ClaimTypes.Name)!.Value,
-                Role = principal.FindFirst(ClaimTypes.Role)?.Value
+                Role = principal.FindFirst(ClaimTypes.Role)?.Value,
+                Device = principal.FindFirst(ClaimTypes.WindowsDeviceClaim)?.Value
             };
         }
         catch (Exception ex)

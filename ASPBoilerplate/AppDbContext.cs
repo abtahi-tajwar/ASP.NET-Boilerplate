@@ -14,15 +14,16 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)  : DbContext(o
     // Unrestricted users
     public DbSet<UnrestrictedUserEntity> UnrestrictedUsers { get; set; }
     public DbSet<UnrestrictedUserProfileEntity> UnrestrictedUserProfiles { get; set; }
-    public DbSet<UnrestrictedUserUserOtpEntity> UnrestrictedUserOtps { get; set; }
-    public DbSet<UnrestrictedTokenEntity> UnrestrictedUserTokens { get; set; }
 
 
     // Resitrcted Users
     public DbSet<RestrictedUserEntity> RestrictedUsers { get; set; }
     public DbSet<RestrictedUserProfileEntity> RestrictedUserProfiles { get; set; }
-    public DbSet<RestrictedUserUserOtpEntity> RestrictedUserOtps { get; set; }
-    public DbSet<RestrictedUserTokenEntity> RestrictedUserTokens { get; set; }
+
+
+    // Common for both users
+    public DbSet<UserTokenEntity> UserTokens { get; set; }
+    public DbSet<UserOtpEntity> UserOtps { get; set; } 
 
     // Chat Entities
     public DbSet<ChatHubConnections> ChatHubConnections { get; set; }

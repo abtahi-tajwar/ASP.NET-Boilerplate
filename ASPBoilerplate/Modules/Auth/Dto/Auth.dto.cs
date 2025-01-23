@@ -33,3 +33,9 @@ public record LoginAdminResponseDto(
     RestrictedUserEntity User,
     string Token
 );
+
+public record TokenValidationResponse (
+    UserTokenEntity? Token,
+    string? Role,
+    bool IsValid
+);

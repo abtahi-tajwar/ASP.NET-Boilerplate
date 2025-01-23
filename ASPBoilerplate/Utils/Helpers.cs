@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ASPBoilerplate.Utils;
 
@@ -52,6 +53,23 @@ public class Helpers
         {
             throw new ArgumentException($"Invalid role: {Role}");
         }
+    }
+
+    public static string ConvertToSnakCase(string? input)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            return string.Empty;
+        }
+
+        // Replace spaces and special characters with underscores
+        input = Regex.Replace(input, @"[^\w]", "_"); // Replace non-word characters with '_'
+
+        // Insert underscores before uppercase letters (e.g., "CamelCase" -> "Camel_Case")
+        input = Regex.Replace(input, @"(?<!^)([A-Z])", "_$1");
+
+        // Convert to lowercase
+        return input.ToLower();
     }
 
 
