@@ -10,12 +10,13 @@ using Stripe;
 
 namespace ASPBoilerplate.Modules.Auth;
 
-public class AuthService : AppBaseService
+[ScopedService]
+public class AuthService
 {
     public AppDbContext _context;
     public CacheService _cache;
 
-    public AuthService(AppDbContext context, CacheService cache) : base(context, cache)
+    public AuthService(AppDbContext context, CacheService cache)
     {
         _context = context;
         _cache = cache;
@@ -157,6 +158,22 @@ public class AuthService : AppBaseService
         _context.SaveChanges();
 
         return NewToken;
+    }
+
+    public bool ValidateToken (string? token) {
+        Console.WriteLine($"Validating token: {token}");
+        if (token == null) return false;
+        bool IsValid = true;
+        try {
+            var Res = JwtTokenService.DecodeAndValidateToken(token);
+            // _cache.GetString($"Something {Res.UserId}_{Res.Email}_{Res.Role}");
+            Console.WriteLine($"Something {Res.UserId}_{Res.Email}_{Res.Role}");
+        } catch (Exception e) {
+            Console.WriteLine($"Failed to validate token. {e.Message}");
+            IsValid = false;
+        }
+        
+        return IsValid;
     }
 
 }

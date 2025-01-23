@@ -10,10 +10,10 @@ namespace SignalRChat.Hubs
         private readonly AppDbContext _dbContext;
         private readonly ChatService _service;
 
-        public ChatHub(AppDbContext dbContext)
+        public ChatHub(AppDbContext dbContext, ChatService service)
         {
             _dbContext = dbContext;
-            _service = new ChatService(dbContext);
+            _service = service;
         }
         public async Task SendMessage(string user, string message, string toUser)
         {

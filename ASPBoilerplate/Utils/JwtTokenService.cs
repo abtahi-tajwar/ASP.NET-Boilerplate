@@ -19,7 +19,8 @@ public static class JwtTokenService
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), // Unique token ID
             new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.AddHours(JwtTokenSettings.ExpireInHour).ToString(), ClaimValueTypes.Integer64) // Issued at time
         };
-        if (JwtTokenSettings.Secret == null) {
+        if (JwtTokenSettings.Secret == null)
+        {
             throw new Exception("Please provide valid jwt secret");
         }
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtTokenSettings.Secret));
@@ -66,9 +67,10 @@ public static class JwtTokenService
             {
                 throw new SecurityTokenException("Invalid token algorithm");
             }
-            
-            
-            return new JwtTokenPayload () {
+
+
+            return new JwtTokenPayload()
+            {
                 UserId = principal.FindFirst(ClaimTypes.NameIdentifier)!.Value,
                 Email = principal.FindFirst(ClaimTypes.Name)!.Value,
                 Role = principal.FindFirst(ClaimTypes.Role)?.Value
@@ -80,12 +82,19 @@ public static class JwtTokenService
         }
     }
 
-    public static void DecodeTokenWithoutValidation(string token)
+    public static JwtTokenPayload DecodeTokenWithoutValidation(string token)
     {
+        Console.WriteLine($"Decoding token: {token}");
         var tokenHandler = new JwtSecurityTokenHandler();
         var jwtToken = tokenHandler.ReadJwtToken(token);
 
-        Console.WriteLine($"Header: {jwtToken.Header}");
-        Console.WriteLine($"Payload: {jwtToken.Payload}");
+        var payload = new JwtTokenPayload
+        {
+            UserId = jwtToken.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value ?? throw new Exception("UserId not found"),
+            Email = jwtToken.Claims.FirstOrDefault(c => c.Type == "Email")?.Value ?? throw new Exception("Email not found"),
+            Role = jwtToken.Claims.FirstOrDefault(c => c.Type == "Role")?.Value
+        };
+
+        return payload;
     }
 }

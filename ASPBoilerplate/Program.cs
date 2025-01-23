@@ -58,7 +58,7 @@ SSLCommerzeSettings.Initialize(builder);
 HangfireSettings.Initialize(builder);
 
 // Initialize caching
-RedisSettings.Initialize(builder);
+CacheSettings.Initialize(builder);
 
 
 builder.Services.AddSignalR();
@@ -84,7 +84,6 @@ app.MapGet("/", () => {
 // app.UseHttpsRedirection();
 app.MapControllers();
 app.UseHangfireDashboard();
-app.FileRoutes();
 app.MapHub<ChatHub>("/chatHub");
 
 // Swagger

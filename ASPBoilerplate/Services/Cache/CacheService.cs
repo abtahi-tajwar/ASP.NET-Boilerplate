@@ -7,7 +7,7 @@ public class CacheService
 {
     private IDistributedCache _cache;
 
-    public CacheService (IDistributedCache cache)
+    public CacheService(IDistributedCache cache)
     {
         _cache = cache;
     }
@@ -18,33 +18,60 @@ public class CacheService
     }
     public void CreateString(string key, string value)
     {
-        _cache.SetString(
-            key, 
-            value, 
-            new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = RedisSettings.DefaultExpiry }
-        );
+        if (!CacheSettings.CacheEnabled)
+        {
+            _cache.SetString(
+                    key,
+                    value,
+                    new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = CacheSettings.DefaultExpiry }
+                );
+        }
     }
-    public T GetOrCreate<T> (string key, Func<T> createItem)
+    public T GetOrCreate<T>(string key, Func<T> createItem)
     {
+        if (!CacheSettings.CacheEnabled)
+        {
+            return createItem();
+        }
         var cachedItem = _cache.GetString(key);
         if (cachedItem == null)
         {
             var item = createItem();
+
             _cache.SetString(
-                key, 
-                JsonSerializer.Serialize(item), 
-                new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = RedisSettings.DefaultExpiry }
+                key,
+                JsonSerializer.Serialize(item),
+                new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = CacheSettings.DefaultExpiry }
             );
             return item;
-        } else {
+        }
+        else
+        {
             return JsonSerializer.Deserialize<T>(cachedItem)!;
         }
     }
-    public void Create (string key, object val) {
-        _cache.SetString(
-            key, 
-            JsonSerializer.Serialize(val), 
-            new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = RedisSettings.DefaultExpiry }
-        );
+    public void Create(string key, object val)
+    {
+        if (CacheSettings.CacheEnabled)
+        {
+            _cache.SetString(
+                key,
+                JsonSerializer.Serialize(val),
+                new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = CacheSettings.DefaultExpiry }
+            );
+        }
+    }
+    public T? Get<T>(string key)
+    {
+        if (!CacheSettings.CacheEnabled)
+        {
+            return default;
+        }
+        var cachedItem = _cache.GetString(key);
+        if (cachedItem == null)
+        {
+            return default;
+        }
+        return JsonSerializer.Deserialize<T>(cachedItem);
     }
 }

@@ -19,7 +19,7 @@ namespace ASPBoilerplate.Controllers;
 public class UserController : ControllerBase
 {
     [HttpGet("list", Name = "ListUsers")]
-    [AuthorizationFilter("Admin")]
+    [AppAuthorize("Admin")]
     public IEnumerable<UnrestrictedUserEntity> List(AppDbContext context)
     {
         var users = context.UnrestrictedUsers.ToList();

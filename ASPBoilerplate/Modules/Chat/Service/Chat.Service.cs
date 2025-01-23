@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ASPBoilerplate.Modules.Chat;
 
+[ScopedService]
 public class ChatService
 {
     private readonly AppDbContext _context;

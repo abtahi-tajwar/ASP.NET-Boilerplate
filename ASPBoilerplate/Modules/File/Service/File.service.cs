@@ -1,6 +1,8 @@
 using ASPBoilerplate.Utils;
 
 namespace ASPBoilerplate.Modules.File;
+
+[ScopedService]
 public class FileService
 {
     private readonly AppDbContext dbContext;
