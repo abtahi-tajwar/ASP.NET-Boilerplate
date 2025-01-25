@@ -60,6 +60,9 @@ HangfireSettings.Initialize(builder);
 // Initialize caching
 CacheSettings.Initialize(builder);
 
+// Initialize GraphQL
+GraphQLSettings.Initialize(builder);
+
 
 builder.Services.AddSignalR();
 
@@ -85,6 +88,7 @@ app.MapGet("/", () => {
 app.MapControllers();
 app.UseHangfireDashboard();
 app.MapHub<ChatHub>("/chatHub");
+app.MapGraphQL();
 
 // Swagger
 if (app.Environment.IsDevelopment())

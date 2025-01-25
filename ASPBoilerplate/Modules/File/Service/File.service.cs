@@ -73,8 +73,8 @@ public class FileService
         {
             if (formFile.Length > 0)
             {
-                string fileName = $"{Path.GetRandomFileName()}{Path.GetExtension(formFile.FileName)}";
-                var filePath = Path.Combine(FileConstants.FILE_STORAGE_PATH, fileName);
+                string fileName = $"{System.IO.Path.GetRandomFileName()}{System.IO.Path.GetExtension(formFile.FileName)}";
+                var filePath = System.IO.Path.Combine(FileConstants.FILE_STORAGE_PATH, fileName);
 
                 CreateFileDto fileDto = new CreateFileDto(
                     Name: fileName, 
@@ -129,7 +129,7 @@ public class FileService
     public static Boolean IsAllUploadedFileExtensionsValid(IEnumerable<IFormFile> files) {
         Boolean isValid = true;
         foreach( var file in files ) {
-            if (!FileConstants.ALLOWED_EXTENSION.Contains(Path.GetExtension(file.FileName))) {
+            if (!FileConstants.ALLOWED_EXTENSION.Contains(System.IO.Path.GetExtension(file.FileName))) {
                 isValid = false;
             }
         }
