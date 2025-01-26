@@ -11,7 +11,7 @@ namespace ASPBoilerplate.Configurations
 
             builder.Services
                 .AddGraphQLServer()
-                .AddQueryType<Query>();
+                .AddQueryType<QueryResolver>();
         }
     }
 }

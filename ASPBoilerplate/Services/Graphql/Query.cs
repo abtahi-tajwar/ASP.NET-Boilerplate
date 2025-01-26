@@ -1,15 +1,26 @@
+using ASPBoilerplate;
 using ASPBoilerplate.Modules.User;
+using ASPBoilerplate.Modules.User.Dtos;
 using ASPBoilerplate.Modules.User.Entity;
+using ASPBoilerplate.Modules.User.Service;
 
 namespace ASPBoilerplate.Services;
 
-class Query {
-    public RestrictedUserEntity GetUser() =>
-        new RestrictedUserEntity
-        {
-            Username = "User er nam",
-            Email = "useremail@gmail.com",
-            Password = "userpassword",
-            Role = USER_ROLES.ADMIN
-        };
+public class QueryResolver
+{
+    private readonly UserGraphqlQuery _query;
+
+    public QueryResolver(AppDbContext dbContext)
+    {
+        _query = new UserGraphqlQuery(dbContext);
+    }
+    public GetRestrictedUserDetailsResponseDto? GetUser(string email)
+    {
+        return _query.GetUser(email);
+    }
+
+    public List<GetRestrictedUserDetailsResponseDto> GetUsers()
+    {
+        return _query.GetUsers();
+    }
 }
