@@ -9,6 +9,7 @@ namespace ASPBoilerplate;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options)  : DbContext(options)
 {
+
     public DbSet<FileEntity> Files { get; set; }
 
     // Unrestricted users

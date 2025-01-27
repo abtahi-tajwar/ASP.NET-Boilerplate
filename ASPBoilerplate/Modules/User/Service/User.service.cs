@@ -39,5 +39,13 @@ public class UserService
         var User = RestrictedUserBinder.GetUserDetailsEntityToDto(FoundUser);
         return User;
     }
+    public GetRestrictedUserDetailsResponseDto GetUserProfileByEmail (string email) {
+        var FoundUser = _context.RestrictedUsers.FirstOrDefault(user => user.Email == email);
+        if (FoundUser == null) {
+            throw new Exception("Can't extract profile information of this user");
+        }
+        var User = RestrictedUserBinder.GetUserDetailsEntityToDto(FoundUser);
+        return User;
+    }
 
 }
