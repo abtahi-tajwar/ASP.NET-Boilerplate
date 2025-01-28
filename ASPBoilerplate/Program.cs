@@ -8,96 +8,105 @@ using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
+namespace ASPBoilerplate;
 
-
-var builder = WebApplication.CreateBuilder(args);
-
-
-var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection");
-builder.Services.AddSqlite<AppDbContext>(connectionString);
-
-builder.Services.AddControllers();
-builder.Services.AddCors(options =>
+public class Program
 {
-    options.AddPolicy("AllowSpecificOrigins", policy =>
+    public static void Main(string[] args)
     {
-        policy.WithOrigins("http://127.0.0.1:5500") // Specify allowed origins
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials()
-              .SetIsOriginAllowedToAllowWildcardSubdomains();
-    });
-});
-
-// Logger
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
-
-// Swagger
-SwaggerSettings.Initialize(builder);
+        var builder = WebApplication.CreateBuilder(args);
 
 
-// Initialize General Settings
-GeneralSettings.Initialize(builder);
+        var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection");
+        builder.Services.AddSqlite<AppDbContext>(connectionString);
 
-// Initialize Authentcation
-AuthSettings.Initialize(builder);
+        builder.Services.AddControllers();
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowSpecificOrigins", policy =>
+            {
+                policy.WithOrigins("http://127.0.0.1:5500") // Specify allowed origins
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .AllowCredentials()
+                      .SetIsOriginAllowedToAllowWildcardSubdomains();
+            });
+        });
 
-// Initialize Mail settings
-MailSettings.InitalizeMailSettings(builder);
-MailService.ConfigureServices(builder.Services);
+        // Logger
+        builder.Logging.ClearProviders();
+        builder.Logging.AddConsole();
 
-// Initialize Jwt config
-JwtTokenSettings.Initialize(builder);
-
-// Initialize Payment gateways
-StripeSettings.Initialize(builder);
-SSLCommerzeSettings.Initialize(builder);
-
-// Initialize scheduler
-HangfireSettings.Initialize(builder);
-
-// Initialize caching
-CacheSettings.Initialize(builder);
-
-// Initialize GraphQL
-GraphQLSettings.Initialize(builder);
+        // Swagger
+        SwaggerSettings.Initialize(builder);
 
 
-builder.Services.AddSignalR();
+        // Initialize General Settings
+        GeneralSettings.Initialize(builder);
 
-builder.Logging.AddConsole();
+        // Initialize Authentcation
+        AuthSettings.Initialize(builder);
 
-builder.Services.AddOpenApi();
+        // Initialize Mail settings
+        MailSettings.InitalizeMailSettings(builder);
+        MailService.ConfigureServices(builder.Services);
 
-var app = builder.Build();
+        // Initialize Jwt config
+        JwtTokenSettings.Initialize(builder);
+
+        // Initialize Payment gateways
+        StripeSettings.Initialize(builder);
+        SSLCommerzeSettings.Initialize(builder);
+
+        // Initialize scheduler
+        HangfireSettings.Initialize(builder);
+
+        // Initialize caching
+        CacheSettings.Initialize(builder);
+
+        // Initialize GraphQL
+        GraphQLSettings.Initialize(builder);
 
 
-app.MapOpenApi();
+        builder.Services.AddSignalR();
 
-// Use the configured CORS policy
-app.UseCors("AllowSpecificOrigins");
+        builder.Logging.AddConsole();
 
-// app.UseAntiforgery();
+        builder.Services.AddOpenApi();
 
-app.MapGet("/", () => {
-    // HangfireSettings.InitializeJobs();
-    return "Connection is OK!";
-});
-// app.UseHttpsRedirection();
-app.MapControllers();
-app.UseHangfireDashboard();
-app.MapHub<ChatHub>("/chatHub");
-app.MapGraphQL();
+        var app = builder.Build();
 
-// Swagger
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+
+        app.MapOpenApi();
+
+        // Use the configured CORS policy
+        app.UseCors("AllowSpecificOrigins");
+
+        // app.UseAntiforgery();
+
+        app.MapGet("/", () =>
+        {
+            // HangfireSettings.InitializeJobs();
+            return "Connection is OK!";
+        });
+        // app.UseHttpsRedirection();
+        app.MapControllers();
+        app.UseHangfireDashboard();
+        app.MapHub<ChatHub>("/chatHub");
+        app.MapGraphQL();
+
+        // Swagger
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+
+
+
+        app.Run();
+    }
 }
 
 
-
-app.Run();
 
