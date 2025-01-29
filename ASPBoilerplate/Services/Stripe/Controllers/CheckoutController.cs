@@ -17,6 +17,7 @@ namespace StripeCheckoutDemo.Controllers
         // This checkout Formmodel I can be creative with
         public IActionResult CreateCheckoutSession([FromBody] CheckoutFormModel model)
         {
+            Console.WriteLine("HItting");
             StripeConfiguration.ApiKey = _configuration["Stripe:SecretKey"];
             var options = new SessionCreateOptions
             {

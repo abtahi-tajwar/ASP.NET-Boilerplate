@@ -34,4 +34,8 @@ public static class CustomResponse
         };
         return Results.BadRequest(response);
     }
+    public static IResult Unauthorized()
+    {
+        return Results.Unauthorized();
+    }
 }

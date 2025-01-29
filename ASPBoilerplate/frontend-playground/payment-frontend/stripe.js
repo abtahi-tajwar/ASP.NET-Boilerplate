@@ -4,7 +4,7 @@ var stripe = Stripe(publicKey);
 document
   .getElementById("checkout-button")
   .addEventListener("click", function () {
-    fetch(`${apiUrl}/checkout/create-checkout-session`, {
+    fetch(`${apiUrl}/stripe/checkout/create-checkout-session`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

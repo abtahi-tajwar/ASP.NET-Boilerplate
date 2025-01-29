@@ -39,15 +39,15 @@ public class UserControllerAdmin : ControllerBase
     }
     
     [HttpGet("list", Name = "ListUsersAdmin")]
-    [Authorize("Admin")]
+    [AppAuthorize("Admin")]
     public IResult List(AppDbContext context)
     {
-        // var users = context.RestrictedUsers.ToList();
-        var _cacheService = new CacheService(_cache);
-        var users = _cacheService.GetOrCreate<List<RestrictedUserEntity>>(
-            "user",
-            () => context.RestrictedUsers.ToList()
-        );
+        var users = context.RestrictedUsers.ToList();
+        // var _cacheService = new CacheService(_cache);
+        // var users = _cacheService.GetOrCreate<List<RestrictedUserEntity>>(
+        //     "user",
+        //     () => context.RestrictedUsers.ToList()
+        // );
         return CustomResponse.Ok(users);
 
     }

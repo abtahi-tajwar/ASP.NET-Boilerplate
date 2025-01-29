@@ -33,6 +33,12 @@ public class Program
             });
         });
 
+        if (builder.Environment.IsDevelopment())
+        {
+            builder.Configuration.AddUserSecrets<Program>();
+        }
+
+
         // Logger
         builder.Logging.ClearProviders();
         builder.Logging.AddConsole();
@@ -46,6 +52,7 @@ public class Program
 
         // Initialize Authentcation
         AuthSettings.Initialize(builder);
+        GoogleAuthSettings.Initialize(builder);
 
         // Initialize Mail settings
         MailSettings.InitalizeMailSettings(builder);

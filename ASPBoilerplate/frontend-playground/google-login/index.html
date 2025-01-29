@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Login Button</title>
+</head>
+<body>
+
+    <button id="google-login-btn">Login with Google</button>
+
+    <script>
+        document.getElementById("google-login-btn").addEventListener("click", function() {
+            // Your Google Client ID
+            const clientId = "733826640205-9csvn72k3r8rhb16drkrk2un96auh8hm.apps.googleusercontent.com";
+            
+            // OAuth URL parameters
+            const redirectUri = "http://localhost:5225/signin-google"; // Your backend API or frontend handler
+            const scope = "openid email profile"; // Request user info
+            const responseType = "code"; // You can also use 'code' for authorization flow
+
+            // Construct the Google OAuth URL
+            const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}&prompt=select_account`;
+
+            console.log("URL", googleAuthUrl)
+            // const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?
+            //     client_id=${clientId}
+            //     &prompt=select_account`;
+
+            // Redirect user to Google Login page
+            window.location.href = googleAuthUrl;
+        });
+    </script>
+
+</body>
+</html>

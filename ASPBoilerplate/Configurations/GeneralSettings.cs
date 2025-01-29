@@ -13,8 +13,11 @@ public class GeneralSettings
         DeveloperKey = builder.Configuration["GeneralSettings:DeveloperKey"];
 
         // Add Base Service
+        builder.Services.AddHttpClient();
+        builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<CacheService>();
         builder.Services.AddScoped<AppBaseService>();
+        // builder.Services.AddScoped<GoogleAuthService>();
 
         // builder.Services.AddScoped<AuthService>();
 

@@ -148,7 +148,7 @@ public class AuthService
 
         string DeviceSnakeCase = Helpers.ConvertToSnakCase(device);
 
-        _cache.Create($"user:{DeviceSnakeCase}", NewToken);
+        _cache.Create($"{user.Id}:{DeviceSnakeCase}", NewToken);
 
         _context.SaveChanges();
 
@@ -162,7 +162,7 @@ public class AuthService
             // _cache.GetString($"Something {Res.UserId}_{Res.Email}_{Res.Role}");
             Console.WriteLine($"Something {Res.UserId}_{Res.Email}_{Res.Role}_{Res.Device}");
 
-            var Token = _cache.Get<UserTokenEntity>($"user:{Helpers.ConvertToSnakCase(Res.Device)}");
+            var Token = _cache.Get<UserTokenEntity>($"{Res.UserId}:{Helpers.ConvertToSnakCase(Res.Device)}");
 
             if (Token == null) {
                 Token = _context.UserTokens.FirstOrDefault(t => t.Token == token);
