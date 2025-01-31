@@ -42,10 +42,26 @@
       })(document, "script", "facebook-jssdk");
 
       function checkLoginState() {
-        FB.getLoginStatus(function (response) {
+        FB.getLoginStatus(async function (response) {
           console.log(response); // Debugging purpose
           if (response.status === "connected") {
             console.log("Response", response);
+
+            var accessToken = response.authResponse.accessToken;
+            const result = await fetch("http://localhost:5225/signin-facebook", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                AccessToken: accessToken,
+              }),
+            });
+
+            const res = await result.json();
+
+            console.log("Res", res);
+
             console.log("User is logged in!");
           } else {
             console.log("User is NOT logged in.");
@@ -61,7 +77,6 @@
         });
         FB.login(function (response) {
           if (response.authResponse) {
-            debugger;
             console.log("Welcome!  Fetching your information.... ");
             FB.api("/me", { fields: "name, email" }, function (response) {
               document.getElementById("profile").innerHTML =

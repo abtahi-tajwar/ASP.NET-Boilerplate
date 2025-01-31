@@ -1,5 +1,6 @@
 namespace ASPBoilerplate.Services;
 
+[ScopedService]
 public class FacebookAuthService
 {
     private readonly IHttpClientFactory _httpClientFactory;
@@ -20,6 +21,7 @@ public class FacebookAuthService
         var facebookGraphUrl = $"https://graph.facebook.com/v22.0/me?fields=id,name,email,picture&access_token={accessToken}";
 
         var response = await httpClient.GetAsync(facebookGraphUrl);
+        
 
         if (response.IsSuccessStatusCode)
         {
