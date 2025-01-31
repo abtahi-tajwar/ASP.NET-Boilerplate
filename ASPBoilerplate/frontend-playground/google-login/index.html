@@ -1,36 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Google Login Button</title>
-</head>
-<body>
+    <!-- Facebook Login -->
+  </head>
+  <body>
+    <script>
+      //   window.fbAsyncInit = function () {
+      //     FB.init({
+      //       appId: "666954702683485",
+      //       xfbml: true,
+      //       version: "v22.0",
+      //     });
+      //     FB.AppEvents.logPageView();
+      //   };
 
+      //   (function (d, s, id) {
+      //     var js,
+      //       fjs = d.getElementsByTagName(s)[0];
+      //     if (d.getElementById(id)) {
+      //       return;
+      //     }
+      //     js = d.createElement(s);
+      //     js.id = id;
+      //     js.src = "https://connect.facebook.net/en_US/sdk.js";
+      //     fjs.parentNode.insertBefore(js, fjs);
+      //   })(document, "script", "facebook-jssdk");
+
+      (function (d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, "script", "facebook-jssdk");
+
+      function checkLoginState() {
+        FB.getLoginStatus(function (response) {
+          console.log(response); // Debugging purpose
+          if (response.status === "connected") {
+            console.log("Response", response);
+            console.log("User is logged in!");
+          } else {
+            console.log("User is NOT logged in.");
+          }
+        });
+      }
+
+      window.fbAsyncInit = function () {
+        FB.init({
+          appId: "641671078348547",
+          xfbml: true,
+          version: "v22.0",
+        });
+        FB.login(function (response) {
+          if (response.authResponse) {
+            debugger;
+            console.log("Welcome!  Fetching your information.... ");
+            FB.api("/me", { fields: "name, email" }, function (response) {
+              document.getElementById("profile").innerHTML =
+                "Good to see you, " +
+                response.name +
+                ". i see your email address is " +
+                response.email;
+            });
+          } else {
+            console.log("User cancelled login or did not fully authorize.");
+          }
+        });
+      };
+    </script>
     <button id="google-login-btn">Login with Google</button>
 
+    <fb:login-button scope="public_profile" onlogin="checkLoginState();">
+    </fb:login-button>
+
     <script>
-        document.getElementById("google-login-btn").addEventListener("click", function() {
-            // Your Google Client ID
-            const clientId = "733826640205-9csvn72k3r8rhb16drkrk2un96auh8hm.apps.googleusercontent.com";
-            
-            // OAuth URL parameters
-            const redirectUri = "http://localhost:5225/signin-google"; // Your backend API or frontend handler
-            const scope = "openid email profile"; // Request user info
-            const responseType = "code"; // You can also use 'code' for authorization flow
+      document
+        .getElementById("google-login-btn")
+        .addEventListener("click", function () {
+          // Your Google Client ID
+          const clientId =
+            "733826640205-9csvn72k3r8rhb16drkrk2un96auh8hm.apps.googleusercontent.com";
 
-            // Construct the Google OAuth URL
-            const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}&prompt=select_account`;
+          // OAuth URL parameters
+          const redirectUri = "http://localhost:5225/signin-google"; // Your backend API or frontend handler
+          const scope = "openid email profile"; // Request user info
+          const responseType = "code"; // You can also use 'code' for authorization flow
 
-            console.log("URL", googleAuthUrl)
-            // const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?
-            //     client_id=${clientId}
-            //     &prompt=select_account`;
+          // Construct the Google OAuth URL
+          const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}&prompt=select_account`;
 
-            // Redirect user to Google Login page
-            window.location.href = googleAuthUrl;
+          console.log("URL", googleAuthUrl);
+          // const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?
+          //     client_id=${clientId}
+          //     &prompt=select_account`;
+
+          // Redirect user to Google Login page
+          window.location.href = googleAuthUrl;
         });
     </script>
-
-</body>
+  </body>
 </html>
