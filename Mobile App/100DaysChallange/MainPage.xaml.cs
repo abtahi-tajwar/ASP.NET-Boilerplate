@@ -1,12 +1,16 @@
-﻿namespace _100DaysChallange;
+﻿using _100DaysChallange.Screens;
+
+namespace _100DaysChallange;
 
 public partial class MainPage : ContentPage
 {
 	int count = 0;
 
-	public MainPage()
+	public MainPage(MainPageViewModel model)
 	{
 		InitializeComponent();
+
+		BindingContext = model;
 	}
 }
 

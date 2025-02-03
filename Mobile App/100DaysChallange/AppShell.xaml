@@ -8,8 +8,7 @@
     Title="_100DaysChallange">
 
     <ShellContent
-        Title="Home"
+        Title="Main"
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-
+        Route="MainPage"/>
 </Shell>
