@@ -1,107 +1,92 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:_100DaysChallange.Modules.Music.Entity"
              xmlns:viewmodel="clr-namespace:_100DaysChallange.Screens"
              x:DataType="viewmodel:MainPageViewModel"
              x:Class="_100DaysChallange.MainPage">
 
-       <StackLayout Padding="10">
-              <!-- Current Song Info -->
-              <StackLayout Orientation="Vertical"
+    <StackLayout Padding="10">
+        <!-- Current Song Info -->
+        <StackLayout Orientation="Vertical"
+                     Padding="10"
+                     BackgroundColor="#3B2C2C">
+            <Label Text="Girl Band"
+                   FontSize="24"
+                   TextColor="White" />
+            <Label Text="02:30 / 05:10"
+                   FontSize="14"
+                   TextColor="LightGray" />
+
+            <!-- Progress Bar -->
+            <Slider Minimum="0"
+                    Maximum="310"
+                    Value="150"
+                    MinimumTrackColor="Red"
+                    MaximumTrackColor="Gray" />
+
+            <!-- Controls -->
+            <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="Center"
+                         Spacing="20">
+                <Button Text="⏮"
+                        BackgroundColor="Transparent"
+                        TextColor="White" />
+                <Button Text="⏸"
+                        BackgroundColor="Transparent"
+                        TextColor="White" />
+                <Button Text="⏭"
+                        BackgroundColor="Transparent"
+                        TextColor="White" />
+            </StackLayout>
+            <Button
+                Text="Go To Home"
+                Command="{Binding HomeButtonClickCommand}" />
+        </StackLayout>
+
+        <!-- Playlist -->
+        <CollectionView VerticalOptions="Fill" ItemsSource="{Binding Musics}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:MusicEntity">
+                    <!-- Song Item Template -->
+                    <Frame BackgroundColor="#1E1E1E"
                            Padding="10"
-                           BackgroundColor="#3B2C2C">
-                     <Label Text="Girl Band"
-                            FontSize="24"
-                            TextColor="White"/>
-                     <Label Text="02:30 / 05:10"
-                            FontSize="14"
-                            TextColor="LightGray"/>
-
-                     <!-- Progress Bar -->
-                     <Slider Minimum="0"
-                             Maximum="310"
-                             Value="150"
-                             MinimumTrackColor="Red"
-                             MaximumTrackColor="Gray"/>
-
-                     <!-- Controls -->
-                     <StackLayout Orientation="Horizontal"
-                                  HorizontalOptions="Center"
-                                  Spacing="20">
-                            <Button Text="⏮"
+                           CornerRadius="10">
+                        <StackLayout Orientation="Horizontal">
+                            <Image Source="dotnet_bot.png"
+                                   WidthRequest="50"
+                                   HeightRequest="50" />
+                            <StackLayout Orientation="Vertical"
+                                         HorizontalOptions="StartAndExpand"
+                                         Padding="10,0">
+                                <!-- <Label -->
+                                <!--     TextColor="White" -->
+                                <!--     FontSize="16"> -->
+                                <!--     <Label.Text> -->
+                                <!--         <MultiBinding> -->
+                                <!--             <Binding Path="Title" /> -->
+                                <!--             <Binding Path="Artist" /> -->
+                                <!--         </MultiBinding> -->
+                                <!--     </Label.Text> -->
+                                <!-- </Label> -->
+                                <Label
+                                    Text="{Binding Title}"
+                                    TextColor="White"
+                                    FontSize="16" />
+                                <Label Text="{Binding Duration}"
+                                       TextColor="Gray"
+                                       FontSize="14" />
+                            </StackLayout>
+                            <Button Text="⋮"
                                     BackgroundColor="Transparent"
-                                    TextColor="White"/>
-                            <Button Text="⏸"
-                                    BackgroundColor="Transparent"
-                                    TextColor="White"/>
-                            <Button Text="⏭"
-                                    BackgroundColor="Transparent"
-                                    TextColor="White"/>
-                     </StackLayout>
-
-                     <Button
-                            Text="Home Page"
-                            Command="{Binding OnHomeButtonClick}"
-                     />
-              </StackLayout>
-
-              <!-- Playlist -->
-              <ScrollView>
-                     <StackLayout Spacing="10"
-                                  Padding="0,10">
-                            <!-- Song Item Template -->
-                            <Frame BackgroundColor="#1E1E1E"
-                                   Padding="10"
-                                   CornerRadius="10">
-                                   <StackLayout Orientation="Horizontal">
-                                          <Image Source="song_cover_placeholder.png"
-                                                 WidthRequest="50"
-                                                 HeightRequest="50"/>
-                                          <StackLayout Orientation="Vertical"
-                                                       HorizontalOptions="StartAndExpand"
-                                                       Padding="10,0">
-                                                 <Label Text="Pain - Ryan Jones"
-                                                        TextColor="White"
-                                                        FontSize="16"/>
-                                                 <Label Text="04:41"
-                                                        TextColor="Gray"
-                                                        FontSize="14"/>
-                                          </StackLayout>
-                                          <Button Text="⋮"
-                                                  BackgroundColor="Transparent"
-                                                  TextColor="White"
-                                                  WidthRequest="30"/>
-                                   </StackLayout>
-                            </Frame>
-
-                            <!-- Repeat the song item template as needed -->
-                            <Frame BackgroundColor="#1E1E1E"
-                                   Padding="10"
-                                   CornerRadius="10">
-                                   <StackLayout Orientation="Horizontal">
-                                          <Image Source="song_cover_placeholder.png"
-                                                 WidthRequest="50"
-                                                 HeightRequest="50"/>
-                                          <StackLayout Orientation="Vertical"
-                                                       HorizontalOptions="StartAndExpand"
-                                                       Padding="10,0">
-                                                 <Label Text="Swan Song - Dua Lipa (Remix Version) - Wow"
-                                                        TextColor="White"
-                                                        FontSize="16"/>
-                                                 <Label Text="04:41"
-                                                        TextColor="Gray"
-                                                        FontSize="14"/>
-                                          </StackLayout>
-                                          <Button Text="⋮"
-                                                  BackgroundColor="Transparent"
-                                                  TextColor="White"
-                                                  WidthRequest="30"/>
-                                   </StackLayout>
-                            </Frame>
-
-                            <!-- Additional song items can be added similarly -->
-                     </StackLayout>
-              </ScrollView>
-       </StackLayout>
+                                    TextColor="White"
+                                    WidthRequest="30" />
+                        </StackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
 
 </ContentPage>

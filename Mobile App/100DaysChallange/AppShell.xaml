@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:_100DaysChallange"
+    xmlns:screens="clr-namespace:_100DaysChallange.Screens"
     Shell.FlyoutBehavior="Flyout"
     Title="_100DaysChallange">
 
@@ -11,4 +12,9 @@
         Title="Main"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage"/>
+    <ShellContent
+        Title="Home"
+        ContentTemplate="{DataTemplate screens:Home}"
+        Route="HomePage"
+    />
 </Shell>

@@ -1,17 +1,37 @@
+using System.Collections.ObjectModel;
 using System.Windows.Input;
+using _100DaysChallange.Modules.Music.Entity;
+using _100DaysChallange.Modules.Music.Service;
 
 namespace _100DaysChallange.Screens;
+
+using _100DaysChallange.Factory;
 using CommunityToolkit.Mvvm.Input;
 
-public class MainPageViewModel
+public partial class MainPageViewModel : BaseViewModel
 {
-    public ICommand ButtonCommand { get; }
-
-    public MainPageViewModel () {
-        ButtonCommand = new RelayCommand(OnHomeButtonClick);
-    }
-    async void OnHomeButtonClick()
+    private MusicRepository _repository;
+    public ObservableCollection<MusicEntity> Musics { get; } = new();
+    
+    public MainPageViewModel(MusicRepository repository)
     {
-        await Shell.Current.GoToAsync(nameof(Home));
+        _repository = repository;
     }
+    
+    public async Task InitializeMusics()
+    {
+        var _musics = await _repository.GetAllAsync();
+        
+        foreach (var m in _musics)
+        {
+            Musics.Add(m);
+        }
+    }
+
+    [RelayCommand]
+    async Task OnHomeButtonClick()
+    {
+        await Shell.Current.GoToAsync("HomePage");
+    }
+    
 }

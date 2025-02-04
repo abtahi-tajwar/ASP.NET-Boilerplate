@@ -65,4 +65,8 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Resource Include="Resources\Raw\music.json" />
+	</ItemGroup>
+
 </Project>
