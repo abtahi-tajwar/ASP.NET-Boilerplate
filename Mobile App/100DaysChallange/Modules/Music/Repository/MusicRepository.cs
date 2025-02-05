@@ -15,4 +15,11 @@ public class MusicRepository
         var Musics = JsonSerializer.Deserialize<List<MusicEntity>>(json);
         return Musics ?? new();
     }
+
+    public async Task<MusicEntity?> GetMusicByIdAsync(int? id)
+    {
+        var _musics = await GetAllAsync();
+        var music = _musics.FirstOrDefault(m => m.Id == id);
+        return music;
+    }   
 }

@@ -2,51 +2,61 @@
   {
     "title": "Pain",
     "artist": "Ryan Jones",
-    "duration": "04:41"
+    "duration": "04:41",
+    "id": 1
   },
   {
     "title": "Swan Song",
     "artist": "Dua Lipa (Remix Version) - Wow",
-    "duration": "04:41"
+    "duration": "04:41",
+    "id": 2
   },
   {
     "title": "Blinding Lights",
     "artist": "The Weeknd",
-    "duration": "03:20"
+    "duration": "03:20",
+    "id": 3
   },
   {
     "title": "Levitating",
     "artist": "Dua Lipa",
-    "duration": "03:23"
+    "duration": "03:23",
+    "id": 4
   },
   {
     "title": "Shape of You",
     "artist": "Ed Sheeran",
-    "duration": "03:54"
+    "duration": "03:54",
+    "id": 5
   },
   {
     "title": "Someone You Loved",
     "artist": "Lewis Capaldi",
-    "duration": "03:02"
+    "duration": "03:02",
+    "id": 6
   },
   {
     "title": "Stay",
     "artist": "The Kid LAROI & Justin Bieber",
-    "duration": "02:21"
+    "duration": "02:21",
+    "id": 7
   },
   {
     "title": "Bad Guy",
     "artist": "Billie Eilish",
-    "duration": "03:14"
+    "duration": "03:14",
+    "id": 8
   },
   {
     "title": "Rockstar",
     "artist": "Post Malone ft. 21 Savage",
-    "duration": "03:38"
+    "duration": "03:38",
+    "id": 9
   },
   {
     "title": "Memories",
     "artist": "Maroon 5",
-    "duration": "03:09"
+    "duration": "03:09",
+    "id": 10
   }
 ]

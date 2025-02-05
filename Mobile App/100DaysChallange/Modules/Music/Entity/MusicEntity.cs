@@ -4,6 +4,8 @@ namespace _100DaysChallange.Modules.Music.Entity;
 
 public class MusicEntity
 {
+    [JsonPropertyName("id")]
+    public int Id { get; set; }
     [JsonPropertyName("title")]
     public string Title { get; set; }
     

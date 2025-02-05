@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:_100DaysChallange.Screens.MusicDetails"
+             x:DataType="vm:MusicDetailsViewModel"
+             x:Class="_100DaysChallange.Screens.MusicDetails.MusicDetails"
+             Title="Music Details">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label FontSize="12" Text="Music Title" />
+            <Label
+                FontSize="22"
+                FontAttributes="Bold"
+                Text="{Binding Music.Title, TargetNullValue='Unknown Title'}" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

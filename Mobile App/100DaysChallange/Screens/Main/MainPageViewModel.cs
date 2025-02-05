@@ -33,5 +33,10 @@ public partial class MainPageViewModel : BaseViewModel
     {
         await Shell.Current.GoToAsync("HomePage");
     }
+    [RelayCommand]
+    async Task OnMusicTap(MusicEntity m)
+    {
+        await Shell.Current.GoToAsync($"MusicDetails?MusicId={m.Id}");
+    }
     
 }
